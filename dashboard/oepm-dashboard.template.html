@@ -80,23 +80,95 @@ section { padding-block: var(--space-5) 0; }
 .kpi.lead .sub, .kpi.lead .note, .kpi.lead .v small { color: rgba(255,255,255,.75); }
 .kpi.lead .kpi-icon { background: rgba(255,255,255,.14); color: var(--color-on-brand); }
 
-/* Timeline */
-.tl { border: var(--border); border-radius: var(--radius); padding: var(--space-3); overflow-x: auto; }
-.tl-inner { min-width: 680px; display: grid; gap: 12px; }
-.tl-row { display: grid; grid-template-columns: 230px 1fr; align-items: center; gap: var(--space-2); }
-.tl-name { font-size: 15px; font-weight: 700; line-height: 1.4; color: var(--color-ink); }
-.tl-name .sub { font-size: 12px; }
-.tl-track { position: relative; height: 32px; }
-.tl-axis .tl-track { height: 24px; border-bottom: 2px solid var(--color-ink); }
-.tick { position: absolute; bottom: 4px; font-size: 13px; font-weight: 700; line-height: 1; color: var(--color-ink); transform: translateX(-50%); font-family: var(--font-vi); }
-.grid-line { position: absolute; top: 0; bottom: 0; border-left: 1px solid var(--color-surface-2); }
-.bar { position: absolute; top: 6px; height: 20px; background: var(--color-brand); border-radius: var(--radius); }
-.bar.tbc { background: repeating-linear-gradient(135deg, var(--color-brand) 0 6px, var(--color-brand-tint) 6px 10px); }
-.bar-label { position: absolute; top: 6px; font-size: 13px; font-weight: 700; line-height: 20px; white-space: nowrap; color: var(--color-ink); font-family: var(--font-vi); }
-.diamond { position: absolute; top: 8px; width: 16px; height: 16px; background: var(--color-brand); transform: translateX(-50%) rotate(45deg); }
-.today { position: absolute; top: 0; bottom: 0; border-left: 3px solid var(--color-accent); }
-.today-cap { position: absolute; top: -4px; transform: translateX(8px); font-size: 12px; line-height: 1; font-weight: 900; color: var(--color-ink); white-space: nowrap; }
-.tl-foot { margin: var(--space-2) 0 0; font-size: 12px; line-height: 1.6; color: var(--color-muted); }
+/* Projects: selector, summary, WBS Gantt */
+.proj-pick { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); margin-bottom: var(--space-3); }
+.proj { text-align: left; cursor: pointer; border: var(--border); border-radius: var(--radius); background: var(--color-bg); padding: 14px var(--space-2); display: grid; gap: 8px; color: var(--color-body); align-content: start; }
+.proj:hover { border-color: var(--color-brand); }
+.proj[aria-pressed="true"] { background: var(--color-brand); border-color: var(--color-brand); color: var(--color-on-brand); }
+.proj-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.proj .code { font-size: 12px; font-weight: 900; letter-spacing: 1px; font-family: var(--font-vi); color: var(--color-brand); line-height: 1.4; }
+.proj .nm { font-size: 15px; font-weight: 900; line-height: 1.4; color: var(--color-ink); }
+.proj .sub { font-size: 12px; }
+.proj[aria-pressed="true"] .code, .proj[aria-pressed="true"] .nm { color: var(--color-on-brand); }
+.proj[aria-pressed="true"] .sub { color: rgba(255,255,255,.75); }
+.proj[aria-pressed="true"] .chip.done { background: rgba(255,255,255,.18); color: var(--color-on-brand); }
+.mini { display: grid; gap: 4px; }
+.mini-row { display: grid; grid-template-columns: 64px 1fr 36px; gap: 8px; align-items: center; font-size: 11px; line-height: 1.3; font-family: var(--font-vi); }
+.mini-row b { text-align: right; font-weight: 900; }
+.mini-track { height: 6px; background: var(--color-surface-2); border-radius: 1px; position: relative; overflow: hidden; }
+.mini-fill { position: absolute; top: 0; bottom: 0; left: 0; background: var(--color-brand); }
+.mini-fill.plan { background: var(--color-border); }
+.mini-fill.late { background: var(--color-critical); }
+.proj[aria-pressed="true"] .mini-track { background: rgba(255,255,255,.2); }
+.proj[aria-pressed="true"] .mini-fill { background: var(--color-on-brand); }
+.proj[aria-pressed="true"] .mini-fill.plan { background: rgba(255,255,255,.5); }
+.proj[aria-pressed="true"] .mini-fill.late { background: #FF8A80; }
+
+.proj-sum { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-2); margin-bottom: var(--space-3); }
+.ps { border: var(--border); border-top: 4px solid var(--color-brand); border-radius: var(--radius); padding: 12px var(--space-2); display: grid; gap: 2px; align-content: start; }
+.ps.bad { border-top-color: var(--color-critical); }
+.ps .k { font-size: 12px; font-weight: 700; color: var(--color-ink); line-height: 1.4; }
+.ps .k .sub { font-size: 11px; }
+.ps .v { font-size: 32px; font-weight: 900; line-height: 1.15; color: var(--color-ink); font-family: var(--font-vi); }
+.ps .v small { font-size: 14px; color: var(--color-muted); margin-left: 2px; }
+.ps .v.bad { color: var(--color-critical); }
+.ps .v.good { color: var(--color-brand); }
+.ps .v.txt { font-size: 17px; line-height: 1.4; padding-top: 6px; }
+.ps .n { font-size: 11px; color: var(--color-muted); line-height: 1.4; font-family: var(--font-vi); }
+
+.gantt-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: var(--space-2); margin-bottom: 12px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; line-height: 1.5; color: var(--color-body); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.lg { width: 24px; height: 10px; border-radius: 1px; display: inline-block; }
+.lg.plan { background: var(--color-brand-tint); border: 1px solid var(--color-brand); }
+.lg.act { background: var(--color-brand); }
+.lg.late { background: var(--color-critical); }
+.lg.ms { width: 11px; height: 11px; background: var(--color-brand); transform: rotate(45deg); }
+.lg.now { width: 3px; height: 16px; background: var(--color-accent); }
+.gantt { border: var(--border); border-radius: var(--radius); overflow-x: auto; }
+.g-inner { min-width: 900px; }
+.g-row { display: grid; grid-template-columns: 300px 1fr; border-bottom: 1px solid var(--color-surface-2); }
+.g-row:last-child { border-bottom: 0; }
+.g-name { padding: 8px 12px; font-size: 13px; line-height: 1.4; color: var(--color-ink); font-weight: 500; border-right: var(--border); min-width: 0; display: flex; gap: 8px; align-items: flex-start; }
+.g-name .wbs { font-family: var(--font-vi); font-weight: 700; color: var(--color-muted); font-size: 12px; min-width: 26px; flex: none; }
+.g-name .sub { font-size: 11px; }
+.g-row.phase { background: var(--color-surface); }
+.g-row.phase .g-name { font-weight: 900; font-size: 14px; }
+.g-row.phase .wbs { color: var(--color-brand); }
+.g-row.kid .g-name { padding-left: 32px; }
+.g-toggle { appearance: none; border: 0; background: none; padding: 0; margin: 0; cursor: pointer; display: flex; gap: 8px; align-items: flex-start; width: 100%; text-align: left; color: inherit; font: inherit; }
+.chev { display: inline-block; width: 12px; flex: none; color: var(--color-brand); font-weight: 900; transition: transform .15s; line-height: 1.4; }
+.g-toggle[aria-expanded="true"] .chev { transform: rotate(90deg); }
+.g-track { position: relative; min-height: 44px; overflow: hidden; }
+.g-track[data-id] { cursor: crosshair; }
+.g-track[data-id]:hover { background: rgba(0, 28, 113, .04); }
+.g-head { background: var(--color-brand); color: var(--color-on-brand); border-bottom: 0; }
+.g-head .g-name { color: var(--color-on-brand); font-size: 12px; font-weight: 700; border-right-color: rgba(255,255,255,.3); align-items: center; }
+.g-head .g-track { min-height: 54px; }
+.g-tick { position: absolute; top: 0; bottom: 0; border-left: 1px solid rgba(255,255,255,.25); font-size: 11px; padding: 4px 0 0 4px; line-height: 1.25; white-space: nowrap; font-family: var(--font-vi); }
+.g-tick b { display: block; font-weight: 900; }
+.g-grid { position: absolute; top: 0; bottom: 0; border-left: 1px solid var(--color-surface-2); }
+.g-grid.yr { border-left: 1px solid var(--color-border); }
+.g-plan { position: absolute; top: 9px; height: 11px; background: var(--color-brand-tint); border: 1px solid var(--color-brand); border-radius: 1px; }
+.g-act { position: absolute; top: 24px; height: 11px; background: var(--color-brand); border-radius: 1px; }
+.g-act.late { background: var(--color-critical); }
+.g-pct { position: absolute; top: 20px; font-size: 11px; font-weight: 900; line-height: 18px; white-space: nowrap; font-family: var(--font-vi); color: var(--color-ink); }
+.g-pct.late { color: var(--color-critical); }
+.phase .g-plan { background: var(--color-ink); border-color: var(--color-ink); }
+.g-ms { position: absolute; top: 14px; width: 16px; height: 16px; background: var(--color-brand); transform: translateX(-50%) rotate(45deg); }
+.g-ms-label { position: absolute; top: 12px; font-size: 12px; font-weight: 900; line-height: 20px; white-space: nowrap; color: var(--color-ink); font-family: var(--font-vi); }
+.g-now { position: absolute; top: 0; bottom: 0; border-left: 3px solid var(--color-accent); z-index: 2; pointer-events: none; }
+.g-now-cap { position: absolute; bottom: 3px; transform: translateX(6px); font-size: 11px; font-weight: 900; line-height: 1; white-space: nowrap; color: var(--color-on-brand); font-family: var(--font-vi); }
+.g-foot { margin: var(--space-2) 0 0; font-size: 12px; line-height: 1.6; color: var(--color-muted); }
+.tip { position: fixed; z-index: 50; background: #0B0F1A; color: #FFFFFF; padding: 12px 14px; border-radius: var(--radius); font-size: 12px; line-height: 1.6; width: max-content; max-width: min(420px, calc(100vw - 16px)); pointer-events: none; font-family: var(--font-sans); }
+.tip .h { display: block; font-size: 14px; font-weight: 900; line-height: 1.4; }
+.tip .hs { display: block; color: rgba(255,255,255,.65); font-size: 11px; line-height: 1.4; margin-bottom: 6px; font-family: var(--font-vi); }
+.tip table { border-collapse: collapse; font-size: 12px; }
+.tip td { padding: 1px 12px 1px 0; vertical-align: top; white-space: nowrap; font-family: var(--font-vi); }
+.tip td:first-child { color: rgba(255,255,255,.65); }
+.tip .big { font-size: 16px; font-weight: 900; }
+.tip .bad { color: #FF8A80; font-weight: 900; }
+.tip .ok { color: #A9BCFF; font-weight: 900; }
 
 /* Agents */
 .agents { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
@@ -192,23 +264,15 @@ table.tasks { width: 100%; min-width: 760px; border-collapse: collapse; line-hei
 .box li time .sub { font-weight: 400; }
 
 /* Risks */
-.risk-tools { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: var(--space-3); margin-bottom: var(--space-3); align-items: start; }
-.risk-filters { display: grid; gap: var(--space-2); }
-.matrix { display: grid; grid-template-columns: 76px repeat(3, minmax(0, 1fr)); gap: 4px; }
-.mx-h { font-size: 12px; font-weight: 700; line-height: 1.3; color: var(--color-ink); display: grid; place-items: center; text-align: center; padding: 4px; }
-.mx-h .sub { font-size: 11px; }
-.mx-corner { font-size: 11px; color: var(--color-muted); line-height: 1.3; display: grid; place-items: center; text-align: center; }
-.cell { min-height: 64px; border: 0; border-radius: var(--radius); cursor: pointer; display: grid; place-items: center; font-size: 28px; font-weight: 900; line-height: 1; font-family: var(--font-vi); background: var(--color-surface); color: var(--color-muted); outline-offset: 0; }
-.cell.s5 { background: var(--color-brand); color: var(--color-on-brand); }
-.cell.s4 { background: var(--color-brand-mid); color: var(--color-on-brand); }
-.cell.s3 { background: var(--color-brand-tint); color: var(--color-brand); }
-.cell.s6 { background: var(--color-critical); color: var(--color-on-brand); }
-.cell.zero { background: var(--color-bg); color: var(--color-border); border: 1px dashed var(--color-border); }
-.cell[aria-pressed="true"] { box-shadow: inset 0 0 0 4px var(--color-accent); }
-.cell:hover { filter: brightness(1.08); }
+.risk-tools { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: var(--space-2); margin-bottom: var(--space-3); }
+.seg button .n { font-size: 12px; font-weight: 900; padding: 0 6px; border-radius: var(--radius); background: var(--color-brand-tint); color: var(--color-brand); }
+.seg button[aria-pressed="true"] .n { background: rgba(255,255,255,.2); color: var(--color-on-brand); }
+.urgent-note { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; line-height: 1.5; color: var(--color-ink); }
+.urgent-note i { width: 14px; height: 14px; background: var(--color-critical); border-radius: 1px; display: inline-block; }
 .risk-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-1); margin-bottom: var(--space-2); }
 .risk-count { font-size: 14px; font-weight: 700; color: var(--color-ink); }
 .risk-count .num { font-size: 22px; font-weight: 900; color: var(--color-brand); margin-right: 4px; }
+.risk-count .red { color: var(--color-critical); }
 .btn { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; line-height: 1.4; padding: 9px 16px; border-radius: var(--radius); text-decoration: none; cursor: pointer; white-space: nowrap; border: 1px solid var(--color-brand); }
 .btn .ico { width: 18px; height: 18px; }
 .btn.primary { background: var(--color-brand); color: var(--color-on-brand); }
@@ -217,44 +281,47 @@ table.tasks { width: 100%; min-width: 760px; border-collapse: collapse; line-hei
 .btn.ghost:hover { background: var(--color-brand-tint); }
 .risks { display: grid; gap: var(--space-2); }
 .risk { display: grid; grid-template-columns: 72px minmax(0, 1fr) minmax(0, 300px); gap: var(--space-3); border: var(--border); border-radius: var(--radius); padding: var(--space-3); align-items: start; }
-.risk.p-h { border-left: 6px solid var(--color-critical); }
-.risk.p-m { border-left: 6px solid var(--color-brand); }
-.risk.p-l { border-left: 6px solid var(--color-muted); }
+.risk.p-h { border-left: 6px solid var(--color-brand); }
+.risk.p-m { border-left: 6px solid var(--color-brand-mid); }
+.risk.p-l { border-left: 6px solid var(--color-border); }
+.risk.is-urgent { border: 2px solid var(--color-critical); border-left: 6px solid var(--color-critical); background: var(--color-critical-tint); }
 .sev-box { width: 72px; height: 72px; display: grid; place-items: center; align-content: center; border-radius: var(--radius); color: var(--color-on-brand); text-align: center; }
 .sev-box b { font-size: 32px; font-weight: 900; line-height: 1; }
 .sev-box span { font-size: 11px; font-weight: 700; line-height: 1.4; font-family: var(--font-vi); margin-top: 4px; }
-.p-h .sev-box { background: var(--color-critical); }
-.p-m .sev-box { background: var(--color-brand); }
-.p-l .sev-box { background: var(--color-muted); }
-.risk-id { font-size: 12px; font-weight: 900; letter-spacing: 1px; color: var(--color-muted); font-family: var(--font-vi); line-height: 1.5; }
+.p-h .sev-box { background: var(--color-brand); }
+.p-m .sev-box { background: var(--color-brand-mid); }
+.p-l .sev-box { background: var(--color-surface-2); color: var(--color-ink); }
+.risk-id { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 900; letter-spacing: 1px; color: var(--color-muted); font-family: var(--font-vi); line-height: 1.5; }
+.urg-flag { display: inline-flex; align-items: center; gap: 4px; letter-spacing: 0; font-size: 12px; font-weight: 900; padding: 2px 8px; border-radius: var(--radius); background: var(--color-critical); color: var(--color-on-brand); }
+.urg-flag .ico { width: 14px; height: 14px; }
 .risk .what { font-size: 18px; font-weight: 900; color: var(--color-ink); line-height: 1.5; margin-top: 2px; }
+.risk.is-urgent .what { color: var(--color-critical); }
 .risk .impact { margin-top: 8px; font-size: 13px; line-height: 1.6; color: var(--color-body); }
 .risk .impact b { color: var(--color-ink); }
-.urg { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 900; line-height: 1.4; padding: 4px 10px; border-radius: var(--radius); margin-bottom: 10px; }
-.urg .ico { width: 16px; height: 16px; }
-.urg.u { background: var(--color-critical); color: var(--color-on-brand); }
-.urg.s { background: var(--color-brand); color: var(--color-on-brand); }
-.urg.p { background: var(--color-surface); color: var(--color-ink); }
 .act { font-size: 13px; line-height: 1.6; color: var(--color-body); display: grid; gap: 4px; }
 .act .own { display: inline-flex; align-items: center; gap: 8px; font-weight: 900; color: var(--color-ink); font-family: var(--font-vi); }
 .act .own img { width: 24px; height: 24px; border-radius: var(--radius); }
-.act .due { font-weight: 700; color: var(--color-ink); }
+.act .due { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--color-ink); }
+.act .due .ico { width: 16px; height: 16px; }
+.is-urgent .act .due { color: var(--color-critical); font-weight: 900; }
 .act .btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .send-note { font-size: 11px; color: var(--color-muted); line-height: 1.5; }
-.empty { border: 1px dashed var(--color-border); padding: var(--space-3); text-align: left; color: var(--color-muted); font-size: 14px; line-height: 1.6; }
+.empty { border: 1px dashed var(--color-border); padding: var(--space-3); color: var(--color-muted); font-size: 14px; line-height: 1.6; }
 
 footer { margin-top: var(--space-5); border-top: var(--border); }
 footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; line-height: 1.8; color: var(--color-muted); display: grid; gap: 4px; }
 
 @media (max-width: 960px) {
+  .proj-pick { grid-template-columns: minmax(0, 1fr); }
+  .proj-sum { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .agents { grid-template-columns: minmax(0, 1fr); }
   .boxes { grid-template-columns: minmax(0, 1fr); }
-  .risk-tools { grid-template-columns: minmax(0, 1fr); }
   .risk { grid-template-columns: 72px minmax(0, 1fr); }
   .risk .act { grid-column: 1 / -1; }
 }
 @media (max-width: 520px) {
+  .proj-sum { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero h1 { font-size: 30px; }
   .kpi .v { font-size: 44px; }
   .sec-head h2 { font-size: 22px; }
@@ -317,12 +384,28 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
   <section aria-labelledby="s-project">
     <div class="wrap">
       <div class="sec-head"><span class="sec-icon"><svg class="ico"><use href="#i-flag"/></svg></span>
-        <h2 id="s-project">プロジェクト工程<span class="sub">Single-use Endoscopic Camera line · Dây chuyền camera nội soi dùng một lần</span></h2></div>
-      <div class="tl"><div class="tl-inner" id="timeline"></div></div>
-      <p class="tl-foot">斜線 = 日程未確定 (TBC)。FAT は据付開始前、詳細日程は未定。<br>Hatched = date TBC. FAT before installation start; exact dates not yet fixed. · Gạch chéo = chưa chốt ngày.</p>
+        <h2 id="s-project">プロジェクト工程<span class="sub">Project schedule · Tiến độ dự án</span></h2></div>
+      <div class="seg-label"><svg class="ico"><use href="#i-filter"/></svg>プロジェクト · Project · Dự án</div>
+      <div class="proj-pick" role="group" aria-label="プロジェクト選択" id="projpick"></div>
+      <div class="proj-sum" id="projsum"></div>
+      <div class="gantt-bar">
+        <div>
+          <div class="seg-label"><svg class="ico"><use href="#i-cal"/></svg>表示期間 · View · Phạm vi</div>
+          <div class="seg" id="zoom"></div>
+        </div>
+        <div class="legend">
+          <span><i class="lg plan"></i>計画 Planned</span>
+          <span><i class="lg act"></i>実績 Actual</span>
+          <span><i class="lg late"></i>計画比 10pt 以上の遅れ · Behind &gt;10 pt</span>
+          <span><i class="lg ms"></i>マイルストーン</span>
+          <span><i class="lg now"></i>進捗日 Status date</span>
+        </div>
+      </div>
+      <div class="gantt"><div class="g-inner" id="gantt"></div></div>
+      <p class="g-foot">バーにマウスを合わせると進捗率と進捗日を表示。フェーズ名クリックで展開／折りたたみ。進捗率は期間加重。<br>Hover a bar for progress % and progress date. Click a phase to expand or collapse. Progress is duration-weighted. · Di chuột lên thanh để xem % tiến độ.</p>
     </div>
   </section>
-
+  <div class="tip" id="tip" hidden></div>
   <section aria-labelledby="s-agents">
     <div class="wrap">
       <div class="sec-head"><span class="sec-icon"><svg class="ico"><use href="#i-users"/></svg></span>
@@ -369,18 +452,14 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
 
   <section aria-labelledby="s-risks">
     <div class="wrap">
-      <div class="sec-head"><span class="sec-icon" style="background:var(--color-critical)"><svg class="ico"><use href="#i-alert"/></svg></span>
+      <div class="sec-head"><span class="sec-icon"><svg class="ico"><use href="#i-alert"/></svg></span>
         <h2 id="s-risks">BOD 向け主要リスク<span class="sub">Key risks for the Board · Rủi ro chính cho HĐQT</span></h2></div>
       <div class="risk-tools">
-        <div class="risk-filters">
-          <div><div class="seg-label"><svg class="ico"><use href="#i-flag"/></svg>優先度 · Priority · Ưu tiên</div><div class="seg" id="f-prio"></div></div>
-          <div><div class="seg-label"><svg class="ico"><use href="#i-clock"/></svg>緊急度 · Urgency · Khẩn cấp</div><div class="seg" id="f-urg"></div></div>
-          <p class="send-note">緊急 = 対応期限まで 7 日以内 · 近日 = 30 日以内 · 計画 = 30 日超<br>Urgent ≤ 7 days to action due · Soon ≤ 30 days · Planned &gt; 30 days</p>
-        </div>
         <div>
-          <div class="seg-label"><svg class="ico"><use href="#i-grid"/></svg>リスクマトリクス · Click a cell to filter</div>
-          <div class="matrix" id="matrix"></div>
+          <div class="seg-label"><svg class="ico"><use href="#i-flag"/></svg>優先度 · Priority · Ưu tiên</div>
+          <div class="seg" id="f-prio"></div>
         </div>
+        <span class="urgent-note"><i></i>赤 = 緊急（対応期限 7 日以内）· Red = urgent, action due within 7 days</span>
       </div>
       <div class="risk-bar">
         <div class="risk-count" id="riskcount"></div>
@@ -505,8 +584,7 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
   ];
   RISKS.forEach(function (r) {
     r.days = daysTo(r.due);
-    r.u = r.days <= 7 ? "u" : (r.days <= 30 ? "s" : "p");
-    r.score = ({ h: 3, m: 2, l: 1 })[r.p] + ({ u: 3, s: 2, p: 1 })[r.u];
+    r.urgent = r.days <= 7;
   });
 
   /* KPIs */
@@ -521,33 +599,278 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
     { lead: 1, i: "flag", v: days, u: "日", k: "据付開始まで", s: "Days to installation · Ngày đến lắp đặt", n: "基準 2027-03-01（月のみ確定）" },
     { i: "tasks", v: openAll, u: "件", k: "未完了タスク", s: "Open tasks · Việc đang mở", n: "うち遅延 <b>" + lateCount + " 件</b> · " + lateCount + " overdue" },
     { i: "check", v: ontimeAll, u: "%", k: "期限内完了率", s: "On-time rate · Tỷ lệ đúng hạn", n: "直近 8 週間・加重平均 · 8-week weighted" },
-    { i: "alert", v: hiRisk, u: "件", k: "高優先度リスク", s: "High-priority risks · Rủi ro ưu tiên cao", n: "BOD 報告対象 · For Board reporting" }
+    { i: "alert", v: hiRisk, u: "件", k: "高優先度リスク", s: "High-priority risks · Rủi ro ưu tiên cao", n: "うち緊急 <b>" + RISKS.filter(function (r) { return r.urgent; }).length + " 件</b> · urgent, due ≤ 7 days" }
   ];
   document.getElementById("kpis").innerHTML = KP.map(function (k) {
     return '<div class="kpi' + (k.lead ? ' lead' : '') + '"><div class="kpi-top"><div class="k">' + k.k + '<span class="sub">' + k.s + '</span></div><span class="kpi-icon">' + ic(k.i) + '</span></div>' +
       '<div class="v num">' + k.v + '<small>' + k.u + '</small></div><div class="note">' + k.n + '</div></div>';
   }).join("");
 
-  /* Timeline */
-  var T0 = new Date("2026-10-01"), T1 = new Date("2030-06-30");
-  function pct(d) { return ((new Date(d) - T0) / (T1 - T0) * 100).toFixed(2) + "%"; }
-  function width(a, b) { return ((new Date(b) - new Date(a)) / (T1 - T0) * 100).toFixed(2) + "%"; }
-  var years = ["2027-01-01", "2028-01-01", "2029-01-01", "2030-01-01"];
-  var grid = years.map(function (y) { return '<span class="grid-line" style="left:' + pct(y) + '"></span>'; }).join("");
-  var todayMark = '<span class="today" style="left:' + pct(ASOF) + '"></span>';
-  var ROWS = [
-    { ja: "FAT（ベンダー工場）", s: "Factory acceptance test", html: '<span class="bar tbc" style="left:' + pct("2027-01-01") + ';width:' + width("2027-01-01", "2027-03-01") + '"></span><span class="bar-label" style="left:calc(' + pct("2027-03-01") + ' + 8px)">据付前 · TBC</span>' },
-    { ja: "据付開始", s: "Installation start · Bắt đầu lắp đặt", html: '<span class="diamond" style="left:' + pct("2027-03-15") + '"></span><span class="bar-label" style="left:calc(' + pct("2027-03-15") + ' + 16px)">2027-03</span>' },
-    { ja: "SAT（現地）", s: "Site acceptance test", html: '<span class="bar" style="left:' + pct("2027-07-01") + ';width:' + width("2027-07-01", "2027-10-01") + '"></span><span class="bar-label" style="left:calc(' + pct("2027-10-01") + ' + 8px)">Q3-2027</span>' },
-    { ja: "バリデーション", s: "Validation · Thẩm định", html: '<span class="bar tbc" style="left:' + pct("2027-01-01") + ';width:' + width("2027-01-01", "2030-01-01") + '"></span><span class="bar-label" style="left:calc(' + pct("2030-01-01") + ' + 8px)">2027–2029</span>' },
-    { ja: "海外向け製品リリース", s: "International release · Phát hành quốc tế", html: '<span class="diamond" style="left:' + pct("2030-01-15") + '"></span><span class="bar-label" style="left:calc(' + pct("2030-01-15") + ' - 104px)">検証完了後</span>' }
+  /* Projects and WBS Gantt */
+  var DAY = 86400000;
+  function D(s) { return new Date(s + "T00:00:00").getTime(); }
+  function fmt(t) { var d = new Date(t); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+  var NOW = ASOF.getTime();
+  function L(code, ja, en, vi, ps, pe, as, ae, pct, upd) { return { code: code, ja: ja, en: en, vi: vi, ps: ps, pe: pe, as: as || null, ae: ae || null, pct: pct || 0, upd: upd || null }; }
+  function M(code, ja, en, vi, date) { return { code: code, ja: ja, en: en, vi: vi, ms: date }; }
+
+  var PROJECTS = [
+    { id: "P1", code: "PRJ-01", ja: "単回使用内視鏡カメラ 新ライン", en: "Single-use Endoscopic Camera line", vi: "Dây chuyền camera nội soi dùng một lần", site: "Olympus Vietnam",
+      views: { near: ["2026-09-01", "2027-12-31"], full: ["2026-09-01", "2030-03-31"] },
+      wbs: [
+        { code: "1", ja: "設計", en: "Design", vi: "Thiết kế", open: true, kids: [
+          L("1.1", "URS 作成", "User requirement spec", "Lập URS", "2026-09-01", "2026-09-30", "2026-09-01", "2026-10-07", 100, "2026-10-07"),
+          L("1.2", "基本設計", "Basic design", "Thiết kế cơ sở", "2026-09-15", "2026-10-31", "2026-09-22", "2026-11-10", 100, "2026-11-10"),
+          L("1.3", "詳細設計", "Detailed design", "Thiết kế chi tiết", "2026-10-15", "2026-12-15", "2026-10-27", null, 35, "2026-11-12"),
+          L("1.4", "設計審査（DR）", "Design review", "Xét duyệt thiết kế", "2026-12-01", "2026-12-31")
+        ]},
+        { code: "2", ja: "設備製作", en: "Equipment fabrication", vi: "Chế tạo thiết bị", open: true, kids: [
+          L("2.1", "長納期部品の調達", "Long-lead parts", "Mua linh kiện dài hạn", "2026-10-01", "2026-11-30", "2026-10-01", null, 70, "2026-11-11"),
+          L("2.2", "機械製作・組立", "Mechanical build and assembly", "Chế tạo và lắp ráp cơ khí", "2026-11-01", "2027-01-15", "2026-11-05", null, 10, "2026-11-12"),
+          L("2.3", "制御・ソフトウェア", "Controls and software", "Điều khiển và phần mềm", "2026-11-15", "2027-01-31")
+        ]},
+        { code: "3", ja: "FAT（ベンダー工場）", en: "FAT at vendor factory", vi: "FAT tại nhà máy nhà cung cấp", open: true, kids: [
+          L("3.1", "FAT プロトコル承認", "FAT protocol approval", "Phê duyệt quy trình FAT", "2027-01-04", "2027-01-15"),
+          L("3.2", "FAT 実施", "FAT execution", "Thực hiện FAT", "2027-01-18", "2027-02-19"),
+          L("3.3", "出荷・輸送・通関", "Shipping and customs", "Vận chuyển và hải quan", "2027-02-15", "2027-02-28")
+        ]},
+        { code: "4", ja: "建設工事（据付前）", en: "Construction before installation", vi: "Thi công trước lắp đặt", open: true, kids: [
+          L("4.1", "許認可申請（建築・消防・環境）", "Permits: building, fire, environment", "Giấy phép: xây dựng, PCCC, môi trường", "2026-10-01", "2026-12-15", "2026-10-08", null, 50, "2026-11-10"),
+          L("4.2", "クリーンルーム建設", "Cleanroom construction", "Xây dựng phòng sạch", "2026-11-15", "2027-02-15"),
+          L("4.3", "ユーティリティ工事（電源・圧縮空気・空調）", "Utilities: power, compressed air, HVAC", "Tiện ích: điện, khí nén, HVAC", "2026-12-01", "2027-02-28")
+        ]},
+        { code: "5", ja: "据付・試運転", en: "Installation and commissioning", vi: "Lắp đặt và chạy thử", open: false, kids: [
+          M("5.0", "据付開始", "Installation start", "Bắt đầu lắp đặt", "2027-03-01"),
+          L("5.1", "搬入・据付", "Move-in and installation", "Đưa vào và lắp đặt", "2027-03-01", "2027-04-30"),
+          L("5.2", "試運転", "Commissioning", "Chạy thử", "2027-05-01", "2027-06-30")
+        ]},
+        { code: "6", ja: "SAT（現地）", en: "Site acceptance test", vi: "Nghiệm thu tại hiện trường", open: false, kids: [
+          L("6.1", "SAT 実施", "SAT execution", "Thực hiện SAT", "2027-07-01", "2027-09-15"),
+          L("6.2", "SAT 報告書承認", "SAT report approval", "Phê duyệt báo cáo SAT", "2027-09-15", "2027-09-30")
+        ]},
+        { code: "7", ja: "バリデーション", en: "Validation", vi: "Thẩm định", open: false, kids: [
+          L("7.1", "IQ（据付時適格性確認）", "Installation qualification", "Thẩm định lắp đặt", "2027-07-01", "2027-12-31"),
+          L("7.2", "OQ（運転時適格性確認）", "Operational qualification", "Thẩm định vận hành", "2028-01-01", "2028-12-31"),
+          L("7.3", "PQ（稼働性能適格性確認）", "Performance qualification", "Thẩm định hiệu năng", "2029-01-01", "2029-12-31")
+        ]},
+        M("8", "海外向け製品リリース", "International product release", "Phát hành sản phẩm quốc tế", "2030-01-15")
+      ]},
+    { id: "P2", code: "PRJ-02", sample: 1, ja: "包装工程 自動化（ロボットセル）", en: "Packaging automation, robot cell", vi: "Tự động hóa đóng gói bằng robot", site: "Olympus Vietnam",
+      views: { near: ["2026-06-01", "2027-07-31"], full: ["2026-06-01", "2027-07-31"] },
+      wbs: [
+        { code: "1", ja: "企画・投資承認", en: "Planning and approval", vi: "Lập kế hoạch và phê duyệt", open: true, kids: [
+          L("1.1", "現状分析", "Current-state analysis", "Phân tích hiện trạng", "2026-06-01", "2026-06-30", "2026-06-01", "2026-06-30", 100, "2026-06-30"),
+          L("1.2", "投資承認", "Investment approval", "Phê duyệt đầu tư", "2026-07-01", "2026-07-31", "2026-07-01", "2026-08-10", 100, "2026-08-10")
+        ]},
+        { code: "2", ja: "設計・製作", en: "Design and build", vi: "Thiết kế và chế tạo", open: true, kids: [
+          L("2.1", "セル設計", "Cell design", "Thiết kế cell", "2026-08-01", "2026-09-30", "2026-08-11", "2026-10-05", 100, "2026-10-05"),
+          L("2.2", "ロボットセル製作", "Robot cell build", "Chế tạo cell robot", "2026-10-01", "2026-12-31", "2026-10-06", null, 45, "2026-11-12")
+        ]},
+        { code: "3", ja: "据付・検証", en: "Installation and validation", vi: "Lắp đặt và thẩm định", open: true, kids: [
+          L("3.1", "FAT", "Factory acceptance test", "Nghiệm thu tại nhà máy", "2027-01-05", "2027-01-20"),
+          L("3.2", "据付", "Installation", "Lắp đặt", "2027-02-01", "2027-02-28"),
+          L("3.3", "IQ / OQ", "IQ / OQ", "IQ / OQ", "2027-03-01", "2027-04-30"),
+          L("3.4", "PQ", "Performance qualification", "Thẩm định hiệu năng", "2027-05-01", "2027-06-15")
+        ]},
+        M("4", "稼働開始", "Go-live", "Đưa vào vận hành", "2027-06-30")
+      ]},
+    { id: "P3", code: "PRJ-03", sample: 1, ja: "工場 OEE 改善プログラム", en: "Plant OEE improvement program", vi: "Chương trình cải thiện OEE nhà máy", site: "Olympus Vietnam",
+      views: { near: ["2026-04-01", "2027-04-30"], full: ["2026-04-01", "2027-04-30"] },
+      wbs: [
+        { code: "1", ja: "現状把握", en: "Baseline", vi: "Đánh giá hiện trạng", open: true, kids: [
+          L("1.1", "OEE ベースライン測定", "OEE baseline", "Đo OEE cơ sở", "2026-04-01", "2026-05-15", "2026-04-01", "2026-05-15", 100, "2026-05-15"),
+          L("1.2", "VSM 作成", "Value stream map", "Sơ đồ chuỗi giá trị", "2026-05-01", "2026-06-15", "2026-05-04", "2026-06-30", 100, "2026-06-30")
+        ]},
+        { code: "2", ja: "改善活動", en: "Improvement waves", vi: "Hoạt động cải tiến", open: true, kids: [
+          L("2.1", "Kaizen 第1波（段取り短縮 SMED）", "Kaizen wave 1, SMED", "Kaizen đợt 1, SMED", "2026-07-01", "2026-09-30", "2026-07-01", "2026-10-20", 100, "2026-10-20"),
+          L("2.2", "Kaizen 第2波（チョコ停削減）", "Kaizen wave 2, minor stops", "Kaizen đợt 2, giảm dừng ngắn", "2026-10-01", "2026-12-31", "2026-10-21", null, 20, "2026-11-12"),
+          L("2.3", "TPM 自主保全の展開", "TPM autonomous maintenance", "TPM bảo trì tự quản", "2026-09-01", "2027-02-28", "2026-09-15", null, 40, "2026-11-10")
+        ]},
+        { code: "3", ja: "標準化・横展開", en: "Standardize and roll out", vi: "Chuẩn hóa và nhân rộng", open: true, kids: [
+          L("3.1", "標準作業書の改訂", "Revise standard work", "Sửa đổi tiêu chuẩn công việc", "2027-01-01", "2027-02-28"),
+          L("3.2", "他ラインへの展開計画", "Roll-out plan for other lines", "Kế hoạch nhân rộng", "2027-02-01", "2027-03-31")
+        ]},
+        M("4", "最終報告", "Final report", "Báo cáo cuối cùng", "2027-03-31")
+      ]}
   ];
-  var axis = '<div class="tl-row tl-axis"><div></div><div class="tl-track">' +
-    years.map(function (y) { return '<span class="tick" style="left:' + pct(y) + '">' + y.slice(0, 4) + '</span>'; }).join("") +
-    '<span class="today-cap" style="left:' + pct(ASOF) + '">今日 Today</span></div></div>';
-  document.getElementById("timeline").innerHTML = axis + ROWS.map(function (r) {
-    return '<div class="tl-row"><div class="tl-name">' + r.ja + '<span class="sub">' + r.s + '</span></div><div class="tl-track">' + grid + todayMark + r.html + '</div></div>';
-  }).join("");
+
+  function plannedPct(t) {
+    var s = D(t.ps), e = D(t.pe) + DAY;
+    if (NOW <= s) return 0; if (NOW >= e) return 100;
+    return Math.round((NOW - s) / (e - s) * 100);
+  }
+  function dur(t) { return (D(t.pe) - D(t.ps)) / DAY + 1; }
+  function rollup(list) {
+    var leaves = list.filter(function (t) { return !t.ms; });
+    var w = sum(leaves.map(dur));
+    var pp = sum(leaves.map(function (t) { return dur(t) * plannedPct(t); })) / w;
+    var ap = sum(leaves.map(function (t) { return dur(t) * t.pct; })) / w;
+    var started = leaves.filter(function (t) { return t.as; });
+    var ps = leaves.map(function (t) { return t.ps; }).sort()[0];
+    var pe = leaves.map(function (t) { return t.pe; }).sort().slice(-1)[0];
+    var as = started.length ? started.map(function (t) { return t.as; }).sort()[0] : null;
+    var allDone = leaves.every(function (t) { return t.ae; });
+    var ae = allDone ? leaves.map(function (t) { return t.ae; }).sort().slice(-1)[0] : null;
+    var upd = started.map(function (t) { return t.upd; }).filter(Boolean).sort().slice(-1)[0] || null;
+    return { ps: ps, pe: pe, as: as, ae: ae, pp: Math.round(pp), ap: Math.round(ap), upd: upd };
+  }
+  function leavesOf(p) { var out = []; p.wbs.forEach(function (n) { if (n.kids) out = out.concat(n.kids); else out.push(n); }); return out; }
+  function behind(pp, ap) { return ap < pp - 10; }
+
+  var proj = "P1", zoom = "near";
+  try { var sp = localStorage.getItem("oepm-proj"); if (PROJECTS.some(function (p) { return p.id === sp; })) proj = sp; var sz = localStorage.getItem("oepm-zoom"); if (sz === "near" || sz === "full") zoom = sz; } catch (err) {}
+  var TIPS = {};
+
+  function renderProjPick() {
+    document.getElementById("projpick").innerHTML = PROJECTS.map(function (p) {
+      var r = rollup(leavesOf(p)), late = behind(r.pp, r.ap);
+      return '<button type="button" class="proj" id="pj-' + p.id + '" data-p="' + p.id + '" aria-pressed="' + (p.id === proj) + '">' +
+        '<span class="proj-top"><span class="code">' + p.code + '</span>' + (p.sample ? '<span class="chip done">サンプル</span>' : '<span class="chip ' + (late ? 'late' : 'prog') + '">' + (late ? '遅れ Behind' : '順調 On track') + '</span>') + '</span>' +
+        '<span><span class="nm">' + p.ja + '</span><span class="sub">' + p.en + ' · ' + p.vi + '</span></span>' +
+        '<span class="mini">' +
+          '<span class="mini-row"><span>計画 Plan</span><span class="mini-track"><span class="mini-fill plan" style="width:' + r.pp + '%"></span></span><b>' + r.pp + '%</b></span>' +
+          '<span class="mini-row"><span>実績 Actual</span><span class="mini-track"><span class="mini-fill' + (late ? ' late' : '') + '" style="width:' + r.ap + '%"></span></span><b>' + r.ap + '%</b></span>' +
+        '</span></button>';
+    }).join("");
+  }
+
+  function renderProjSum(p) {
+    var r = rollup(leavesOf(p)), v = r.ap - r.pp, spi = r.pp ? (r.ap / r.pp) : 1;
+    var nextMs = leavesOf(p).filter(function (t) { return t.ms && D(t.ms) > NOW; }).sort(function (a, b) { return D(a.ms) - D(b.ms); })[0];
+    var cells = [
+      { k: "計画進捗", s: "Planned · Kế hoạch", v: r.pp + "<small>%</small>", n: "進捗日 " + fmt(NOW) },
+      { k: "実績進捗", s: "Actual · Thực tế", v: r.ap + "<small>%</small>", cls: behind(r.pp, r.ap) ? "bad" : "good", n: "最終更新 " + (r.upd || "-") },
+      { k: "差異", s: "Variance · Chênh lệch", v: (v > 0 ? "+" : "") + v + "<small>pt</small>", cls: v < -5 ? "bad" : "", n: "実績 − 計画 · Actual − Plan" },
+      { k: "SPI", s: "Schedule index · Chỉ số tiến độ", v: spi.toFixed(2), cls: spi < 0.9 ? "bad" : "", n: "1.00 = 計画通り · on plan" },
+      { k: "次のマイルストーン", s: "Next milestone · Mốc tiếp theo", v: nextMs ? nextMs.ja : "-", txt: 1, n: nextMs ? nextMs.ms + " · 残り " + Math.round((D(nextMs.ms) - NOW) / DAY) + " 日" : "" }
+    ];
+    document.getElementById("projsum").innerHTML = cells.map(function (c) {
+      return '<div class="ps' + (c.cls === "bad" ? " bad" : "") + '"><div class="k">' + c.k + '<span class="sub">' + c.s + '</span></div><div class="v' + (c.cls ? " " + c.cls : "") + (c.txt ? " txt" : "") + '">' + c.v + '</div><div class="n">' + c.n + '</div></div>';
+    }).join("");
+  }
+
+  function renderZoom() {
+    document.getElementById("zoom").innerHTML = [["near", "直近 · Near term"], ["full", "全期間 · Full"]].map(function (z) {
+      return '<button type="button" id="z-' + z[0] + '" data-z="' + z[0] + '" aria-pressed="' + (zoom === z[0]) + '">' + z[1] + '</button>';
+    }).join("");
+  }
+
+  function renderGantt(p) {
+    var V0 = D(p.views[zoom][0]), V1 = D(p.views[zoom][1]) + DAY, span = V1 - V0;
+    function X(t) { return (t - V0) / span * 100; }
+    function bar(a, b, cls, extra) {
+      var l = Math.max(0, X(a)), r = Math.min(100, X(b));
+      if (r <= 0 || l >= 100 || r <= l) return "";
+      return '<span class="' + cls + '" style="left:' + l.toFixed(2) + '%;width:' + (r - l).toFixed(2) + '%"' + (extra || "") + '></span>';
+    }
+    /* month / year ticks */
+    var months = Math.round(span / DAY / 30.4);
+    var step = months > 24 ? 3 : 1;
+    var ticks = "", grid = "", d = new Date(V0);
+    d.setDate(1);
+    while (d.getTime() < V1) {
+      var x = X(d.getTime());
+      if (x >= 0 && d.getMonth() % step === 0) {
+        var lab = step === 3 ? ("Q" + (d.getMonth() / 3 + 1)) : ((d.getMonth() + 1) + "月");
+        ticks += '<span class="g-tick" style="left:' + x.toFixed(2) + '%">' + (d.getMonth() === 0 || ticks === "" ? '<b>' + d.getFullYear() + '</b>' : '<b>&nbsp;</b>') + lab + '</span>';
+        grid += '<span class="g-grid' + (d.getMonth() === 0 ? ' yr' : '') + '" style="left:' + x.toFixed(2) + '%"></span>';
+      }
+      d.setMonth(d.getMonth() + 1);
+    }
+    var nowX = X(NOW);
+    var nowLine = nowX >= 0 && nowX <= 100 ? '<span class="g-now" style="left:' + nowX.toFixed(2) + '%"></span>' : "";
+    var html = '<div class="g-row g-head"><div class="g-name">WBS · 作業 / Task / Công việc</div><div class="g-track">' + ticks + nowLine +
+      (nowLine ? '<span class="g-now-cap" style="left:' + nowX.toFixed(2) + '%">進捗日 ' + fmt(NOW).slice(5) + '</span>' : '') + '</div></div>';
+    TIPS = {};
+
+    function msRow(m, kid) {
+      var x = X(D(m.ms)), inView = x >= 0 && x <= 100;
+      var id = p.id + "-" + m.code;
+      TIPS[id] = { h: m.code + " " + m.ja, hs: m.en + " · " + m.vi, rows: [["予定日 Date", m.ms], ["残り Days left", Math.round((D(m.ms) - NOW) / DAY) + " 日"]] };
+      return '<div class="g-row' + (kid ? ' kid' : ' phase') + '"><div class="g-name"><span class="wbs">' + m.code + '</span><span>' + m.ja + '<span class="sub">' + m.en + ' · ' + m.vi + '</span></span></div>' +
+        '<div class="g-track" data-id="' + id + '">' + grid + nowLine +
+        (inView ? '<span class="g-ms" style="left:' + x.toFixed(2) + '%"></span><span class="g-ms-label" style="' + (x > 80 ? 'right:' + (100 - x + 1.5).toFixed(2) + '%' : 'left:calc(' + x.toFixed(2) + '% + 14px)') + '">' + m.ms + '</span>' : '<span class="g-ms-label" style="right:8px">' + m.ms + ' ›</span>') +
+        '</div></div>';
+    }
+    function taskBars(t, pp, ap) {
+      var late = behind(pp, ap);
+      var s = '' + bar(D(t.ps), D(t.pe) + DAY, "g-plan");
+      if (t.as) {
+        var end = t.ae ? D(t.ae) + DAY : NOW;
+        s += bar(D(t.as), end, "g-act" + (late ? " late" : ""));
+        var px = Math.min(100, X(end));
+        if (px > 0) s += '<span class="g-pct' + (late ? ' late' : '') + '" style="' + (px > 90 ? 'right:' + (100 - Math.max(0, X(D(t.as))) + 0.8).toFixed(2) + '%' : 'left:calc(' + px.toFixed(2) + '% + 6px)') + '">' + ap + '%</span>';
+      }
+      return s;
+    }
+    function tip(id, t, pp, ap, isPhase) {
+      var v = ap - pp;
+      TIPS[id] = { h: t.code + " " + t.ja, hs: t.en + " · " + t.vi, rows: [
+        ["計画 Planned", t.ps + " → " + t.pe],
+        ["実績 Actual", t.as ? (t.as + " → " + (t.ae || "進行中 in progress")) : "未着手 Not started"],
+        ["計画進捗 Plan %", '<span class="big">' + pp + '%</span>'],
+        ["実績進捗 Actual %", '<span class="big ' + (behind(pp, ap) ? 'bad' : 'ok') + '">' + ap + '%</span>'],
+        ["差異 Variance", '<span class="' + (v < -5 ? 'bad' : 'ok') + '">' + (v > 0 ? "+" : "") + v + ' pt</span>'],
+        ["進捗日 Progress date", t.upd || (isPhase ? "-" : "未更新 none")]
+      ]};
+    }
+
+    p.wbs.forEach(function (n) {
+      if (n.ms) { html += msRow(n, false); return; }
+      var r = rollup(n.kids), id = p.id + "-" + n.code;
+      var ph = { code: n.code, ja: n.ja, en: n.en, vi: n.vi, ps: r.ps, pe: r.pe, as: r.as, ae: r.ae, upd: r.upd };
+      tip(id, ph, r.pp, r.ap, true);
+      html += '<div class="g-row phase"><div class="g-name"><button type="button" class="g-toggle" data-ph="' + n.code + '" aria-expanded="' + !!n.open + '"><span class="chev">›</span><span class="wbs">' + n.code + '</span><span>' + n.ja + '<span class="sub">' + n.en + ' · ' + n.vi + '</span></span></button></div>' +
+        '<div class="g-track" data-id="' + id + '">' + grid + nowLine + taskBars(ph, r.pp, r.ap) + '</div></div>';
+      if (!n.open) return;
+      n.kids.forEach(function (t) {
+        if (t.ms) { html += msRow(t, true); return; }
+        var pp = plannedPct(t), kid = p.id + "-" + t.code;
+        tip(kid, t, pp, t.pct, false);
+        html += '<div class="g-row kid"><div class="g-name"><span class="wbs">' + t.code + '</span><span>' + t.ja + '<span class="sub">' + t.en + ' · ' + t.vi + '</span></span></div>' +
+          '<div class="g-track" data-id="' + kid + '">' + grid + nowLine + taskBars(t, pp, t.pct) + '</div></div>';
+      });
+    });
+    document.getElementById("gantt").innerHTML = html;
+  }
+
+  function current_() { return PROJECTS.filter(function (p) { return p.id === proj; })[0]; }
+  function renderProject() { var p = current_(); renderProjPick(); renderProjSum(p); renderZoom(); renderGantt(p); }
+  function save() { try { localStorage.setItem("oepm-proj", proj); localStorage.setItem("oepm-zoom", zoom); } catch (err) {} }
+  document.getElementById("projpick").addEventListener("click", function (e) {
+    var b = e.target.closest(".proj"); if (!b) return; proj = b.dataset.p; save(); renderProject(); document.getElementById("pj-" + proj).focus();
+  });
+  document.getElementById("zoom").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return; zoom = b.dataset.z; save(); renderZoom(); renderGantt(current_()); document.getElementById("z-" + zoom).focus();
+  });
+  document.getElementById("gantt").addEventListener("click", function (e) {
+    var b = e.target.closest(".g-toggle"); if (!b) return;
+    var p = current_(), code = b.dataset.ph;
+    p.wbs.forEach(function (n) { if (n.code === code) n.open = !n.open; });
+    renderGantt(p);
+    var nb = document.querySelector('.g-toggle[data-ph="' + code + '"]'); if (nb) nb.focus();
+  });
+
+  /* Hover tooltip */
+  var tipEl = document.getElementById("tip");
+  function showTip(id, x, y) {
+    var t = TIPS[id]; if (!t) { tipEl.hidden = true; return; }
+    tipEl.innerHTML = '<span class="h">' + t.h + '</span><span class="hs">' + t.hs + '</span><table>' +
+      t.rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join("") + '</table>';
+    tipEl.hidden = false;
+    var w = tipEl.offsetWidth, h = tipEl.offsetHeight;
+    var left = x + 16, top = y + 16;
+    if (left + w > window.innerWidth - 8) left = x - w - 16;
+    if (top + h > window.innerHeight - 8) top = y - h - 16;
+    tipEl.style.left = Math.max(8, left) + "px"; tipEl.style.top = Math.max(8, top) + "px";
+  }
+  var g = document.getElementById("gantt");
+  g.addEventListener("mousemove", function (e) { var tr = e.target.closest(".g-track[data-id]"); if (tr) showTip(tr.dataset.id, e.clientX, e.clientY); else tipEl.hidden = true; });
+  g.addEventListener("mouseleave", function () { tipEl.hidden = true; });
+  g.addEventListener("touchstart", function (e) { var tr = e.target.closest(".g-track[data-id]"); if (tr) { var t = e.touches[0]; showTip(tr.dataset.id, t.clientX, t.clientY); } }, { passive: true });
+  document.addEventListener("touchstart", function (e) { if (!e.target.closest(".g-track[data-id]")) tipEl.hidden = true; }, { passive: true });
+  window.addEventListener("scroll", function () { tipEl.hidden = true; }, { passive: true });
+  renderProject();
 
   /* Agents */
   function chip(s) { return '<span class="chip ' + s + '">' + ST[s][0] + '</span>'; }
@@ -646,20 +969,20 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
   });
   renderTabs();
 
-  /* Risks: filters, matrix, Outlook drafts */
-  var fp = "all", fu = "all";
+  /* Risks: priority filter, urgent in red, Outlook drafts */
+  var fp = "all";
   var OWA = "https://outlook.office.com/mail/deeplink/compose";
   function riskText(r) {
-    return "【" + r.id + "】" + r.ja + "\n" +
+    return "【" + r.id + "】" + (r.urgent ? "［緊急 URGENT］" : "") + r.ja + "\n" +
       "  " + r.en + " / " + r.vi + "\n" +
-      "  優先度 Priority: " + PR[r.p][0] + " " + PR[r.p][1] + "  |  緊急度 Urgency: " + UR[r.u][0] + " " + UR[r.u][1] + "\n" +
+      "  優先度 Priority: " + PR[r.p][0] + " " + PR[r.p][1] + "\n" +
       "  影響 Impact: " + r.impJa + " / " + r.impEn + "\n" +
       "  対応 Action: " + r.actJa + " / " + r.actEn + "\n" +
       "  担当 Owner: " + r.own + "  |  期限 Due: " + r.due + "（残り " + r.days + " 日）";
   }
   function mailParts(list) {
     var subject = list.length === 1
-      ? "[OEPM リスク報告 / Risk report] " + list[0].id + " " + list[0].ja + "（" + PR[list[0].p][0] + "・" + UR[list[0].u][0] + "）"
+      ? "[OEPM リスク報告 / Risk report] " + (list[0].urgent ? "【緊急】" : "") + list[0].id + " " + list[0].ja + "（優先度 " + PR[list[0].p][0] + "）"
       : "[OEPM リスク報告 / Risk report] 主要リスク " + list.length + " 件 / " + list.length + " key risks";
     var body = "各位 / Dear Board members,\n\n" +
       "単回使用内視鏡カメラ新ライン（オリンパスベトナム）のリスクを報告します。\n" +
@@ -671,66 +994,46 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
   function owaHref(list) { var m = mailParts(list); return OWA + "?subject=" + encodeURIComponent(m.subject) + "&body=" + encodeURIComponent(m.body); }
   function mailtoHref(list) { var m = mailParts(list); return "mailto:?subject=" + encodeURIComponent(m.subject) + "&body=" + encodeURIComponent(m.body); }
   function shown() {
-    return RISKS.filter(function (r) { return (fp === "all" || r.p === fp) && (fu === "all" || r.u === fu); })
-      .sort(function (a, b) { return b.score - a.score || a.days - b.days; });
+    return RISKS.filter(function (r) { return fp === "all" || r.p === fp; })
+      .sort(function (a, b) { return (b.urgent - a.urgent) || (({ h: 3, m: 2, l: 1 })[b.p] - ({ h: 3, m: 2, l: 1 })[a.p]) || (a.days - b.days); });
   }
   function renderRiskFilters() {
     document.getElementById("f-prio").innerHTML = [["all", "すべて · All"]].concat(["h", "m", "l"].map(function (k) { return [k, PR[k][0] + " · " + PR[k][1]]; })).map(function (o) {
-      return '<button type="button" id="fp-' + o[0] + '" data-v="' + o[0] + '" aria-pressed="' + (fp === o[0]) + '">' + o[1] + '</button>';
+      var n = RISKS.filter(function (r) { return o[0] === "all" || r.p === o[0]; }).length;
+      return '<button type="button" id="fp-' + o[0] + '" data-v="' + o[0] + '" aria-pressed="' + (fp === o[0]) + '">' + o[1] + '<span class="n">' + n + '</span></button>';
     }).join("");
-    document.getElementById("f-urg").innerHTML = [["all", "すべて · All"]].concat(["u", "s", "p"].map(function (k) { return [k, UR[k][0] + " · " + UR[k][1]]; })).map(function (o) {
-      return '<button type="button" id="fu-' + o[0] + '" data-v="' + o[0] + '" aria-pressed="' + (fu === o[0]) + '">' + o[1] + '</button>';
-    }).join("");
-    var html = '<div class="mx-corner">優先度 ↓<br>緊急度 →</div>' + ["u", "s", "p"].map(function (u) {
-      return '<div class="mx-h">' + UR[u][0] + '<span class="sub">' + UR[u][1] + '</span></div>';
-    }).join("");
-    ["h", "m", "l"].forEach(function (p) {
-      html += '<div class="mx-h">' + PR[p][0] + '<span class="sub">' + PR[p][1] + '</span></div>';
-      ["u", "s", "p"].forEach(function (u) {
-        var n = RISKS.filter(function (r) { return r.p === p && r.u === u; }).length;
-        var sc = ({ h: 3, m: 2, l: 1 })[p] + ({ u: 3, s: 2, p: 1 })[u];
-        var cls = n === 0 ? "zero" : ("s" + Math.max(sc, 2));
-        html += '<button type="button" class="cell ' + cls + '" id="mx-' + p + u + '" data-p="' + p + '" data-u="' + u + '" aria-pressed="' + (fp === p && fu === u) + '" aria-label="' + PR[p][1] + ' / ' + UR[u][1] + ': ' + n + '">' + n + '</button>';
-      });
-    });
-    document.getElementById("matrix").innerHTML = html;
   }
   function renderRisks() {
-    var list = shown();
-    document.getElementById("riskcount").innerHTML = '<span class="num">' + list.length + '</span>件表示中 · ' + list.length + ' of ' + RISKS.length + ' shown';
+    var list = shown(), urg = list.filter(function (r) { return r.urgent; }).length;
+    document.getElementById("riskcount").innerHTML = '<span class="num">' + list.length + '</span>件表示中 · ' + list.length + ' of ' + RISKS.length + ' shown' +
+      (urg ? ' &nbsp;|&nbsp; <span class="num red">' + urg + '</span><span class="red">件 緊急 · urgent</span>' : '');
     var all = document.getElementById("report-all");
     all.href = list.length ? owaHref(list) : "#";
-    all.setAttribute("aria-disabled", list.length ? "false" : "true");
     all.style.opacity = list.length ? "1" : ".4";
     document.getElementById("risks").innerHTML = list.length ? list.map(function (r) {
-      return '<article class="risk p-' + r.p + '">' +
+      return '<article class="risk p-' + r.p + (r.urgent ? ' is-urgent' : '') + '">' +
         '<div class="sev-box"><b>' + PR[r.p][0] + '</b><span>' + PR[r.p][1] + '</span></div>' +
-        '<div><div class="risk-id">' + r.id + '</div><div class="what">' + r.ja + '</div><span class="sub">' + r.en + ' · ' + r.vi + '</span>' +
+        '<div><div class="risk-id">' + r.id + (r.urgent ? '<span class="urg-flag">' + ic("alert") + '緊急 Urgent</span>' : '') + '</div><div class="what">' + r.ja + '</div><span class="sub">' + r.en + ' · ' + r.vi + '</span>' +
           '<div class="impact"><b>影響 Impact：</b>' + r.impJa + '<span class="sub">' + r.impEn + '</span></div></div>' +
-        '<div class="act"><span class="urg ' + r.u + '">' + ic("clock") + UR[r.u][0] + ' · ' + UR[r.u][1] + ' · 残り ' + r.days + ' 日</span>' +
-          '<span class="own"><img src="' + AV[r.own] + '" alt="">' + r.own + '</span>' +
+        '<div class="act"><span class="own"><img src="' + AV[r.own] + '" alt="">' + r.own + '</span>' +
           '<span>' + r.actJa + '<span class="sub">' + r.actEn + '</span></span>' +
-          '<span class="due num">期限 Due ' + r.due + '</span>' +
+          '<span class="due num">' + ic("clock") + '期限 ' + r.due + ' · 残り ' + r.days + ' 日</span>' +
           '<div class="btns"><a class="btn primary" href="' + owaHref([r]) + '" target="_blank" rel="noopener">' + ic("send") + 'Outlook で報告</a>' +
           '<a class="btn ghost" href="' + mailtoHref([r]) + '">' + ic("mail") + 'デスクトップ版</a></div>' +
           '<span class="send-note">下書きを開くだけ。送信はご自身で。 · Opens a draft. You send.</span></div>' +
         '</article>';
     }).join("") : '<div class="empty">該当するリスクはありません。 · No risks match this filter. · Không có rủi ro phù hợp.</div>';
   }
-  function setRisk(p, u, focusId) {
-    fp = p; fu = u;
-    try { localStorage.setItem("oepm-risk", fp + "|" + fu); } catch (err) {}
+  document.getElementById("f-prio").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    fp = b.dataset.v;
+    try { localStorage.setItem("oepm-prio", fp); } catch (err) {}
     renderRiskFilters(); renderRisks();
-    var el = document.getElementById(focusId); if (el) el.focus();
-  }
-  document.getElementById("f-prio").addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) setRisk(b.dataset.v, fu, b.id); });
-  document.getElementById("f-urg").addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) setRisk(fp, b.dataset.v, b.id); });
-  document.getElementById("matrix").addEventListener("click", function (e) {
-    var b = e.target.closest(".cell"); if (!b) return;
-    if (fp === b.dataset.p && fu === b.dataset.u) setRisk("all", "all", b.id); else setRisk(b.dataset.p, b.dataset.u, b.id);
+    document.getElementById("fp-" + fp).focus();
   });
   document.getElementById("report-all").addEventListener("click", function (e) { if (!shown().length) e.preventDefault(); });
-  try { var sr = (localStorage.getItem("oepm-risk") || "").split("|"); if (sr.length === 2) { fp = sr[0] || "all"; fu = sr[1] || "all"; } } catch (err) {}
+  try { var sv = localStorage.getItem("oepm-prio"); if (["all", "h", "m", "l"].indexOf(sv) >= 0) fp = sv; } catch (err) {}
   renderRiskFilters(); renderRisks();
 })();
+
 </script>
