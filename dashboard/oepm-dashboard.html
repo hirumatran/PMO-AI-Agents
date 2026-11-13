@@ -34,7 +34,7 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 body { background: var(--color-bg); color: var(--color-body); font-family: var(--font-sans); font-size: 16px; line-height: 2; -webkit-font-smoothing: antialiased; }
-body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--color-brand); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--color-bg); }
 table { font-size: inherit; }
 button { font: inherit; }
 .wrap { max-width: calc(var(--content-max) + 32px); margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
@@ -42,6 +42,45 @@ button { font: inherit; }
 .sub { display: block; font-family: var(--font-vi); font-size: 13px; line-height: 1.5; color: var(--color-muted); font-weight: 400; letter-spacing: 0; }
 .ico { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 :focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+
+/* Top bar: logo + welcome widget */
+.topbar { background: var(--color-bg); border-bottom: var(--border); }
+.topbar-in { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-2) var(--space-4); padding-block: var(--space-2); }
+.logo { display: block; height: 34px; width: auto; }
+.welcome { display: grid; grid-template-columns: auto auto auto; border: var(--border); border-radius: var(--radius); background: var(--color-bg); }
+.w-panel { padding: 10px var(--space-2); display: grid; gap: 4px; align-content: start; min-width: 0; }
+.w-panel + .w-panel { border-left: var(--border); }
+.w-label { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--color-muted); line-height: 1.4; font-family: var(--font-vi); }
+.w-label .ico { width: 14px; height: 14px; }
+.w-greet { font-size: 15px; font-weight: 900; color: var(--color-brand); line-height: 1.4; }
+.w-greet .sub { font-size: 11px; font-weight: 500; }
+.w-date { font-size: 18px; font-weight: 900; color: var(--color-ink); line-height: 1.3; }
+.w-date small { font-size: 12px; font-weight: 500; color: var(--color-muted); margin-left: 6px; }
+.w-lunar { display: flex; align-items: center; gap: 6px; font-size: 12px; line-height: 1.5; color: var(--color-body); }
+.w-lunar b { color: var(--color-ink); font-weight: 900; }
+.w-lunar .ico { width: 14px; height: 14px; color: var(--color-brand); }
+.w-clocks { display: grid; gap: 6px; }
+.w-clock { display: grid; grid-template-columns: 74px auto; align-items: baseline; gap: 8px; }
+.w-clock .c-name { font-size: 12px; font-weight: 700; color: var(--color-ink); line-height: 1.3; }
+.w-clock .c-name .sub { font-size: 10px; }
+.w-clock .c-time { font-size: 26px; font-weight: 900; line-height: 1; color: var(--color-brand); font-family: var(--font-vi); font-variant-numeric: tabular-nums; }
+.w-clock .c-time small { font-size: 13px; font-weight: 700; color: var(--color-muted); margin-left: 2px; }
+.w-wx { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.w-wx li { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: 12px; line-height: 1.35; }
+.w-wx .ico { width: 22px; height: 22px; color: var(--color-brand); }
+.w-wx .city { color: var(--color-ink); font-weight: 700; white-space: nowrap; }
+.w-wx .city .sub { display: inline; font-size: 10px; margin-left: 4px; }
+.w-wx .tmp { text-align: right; white-space: nowrap; }
+.w-wx .tmp b { font-size: 17px; font-weight: 900; color: var(--color-ink); font-family: var(--font-vi); }
+.w-wx .tmp span { display: block; font-size: 10px; color: var(--color-muted); }
+.w-src { font-size: 10px; color: var(--color-muted); line-height: 1.4; font-family: var(--font-vi); }
+@media (max-width: 1100px) { .welcome { width: 100%; } }
+@media (max-width: 720px) {
+  .welcome { grid-template-columns: minmax(0, 1fr); }
+  .w-panel + .w-panel { border-left: 0; border-top: var(--border); }
+  .w-clock { grid-template-columns: 110px auto; }
+  .logo { height: 28px; }
+}
 
 /* Header */
 .hero { background: var(--color-brand); color: var(--color-on-brand); }
@@ -355,12 +394,45 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
   <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="13" height="13" rx="1"/><path d="M16 8V3H3v13h5"/></symbol>
   <symbol id="i-hash" viewBox="0 0 24 24"><path d="M9 3L7 21M17 3l-2 18M4 8h17M3 16h17"/></symbol>
   <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-partly" viewBox="0 0 24 24"><path d="M8 3v1.5M3.5 8H2M4.6 4.6l1 1M12.4 4.6l-1 1"/><path d="M5.5 10.5A3.5 3.5 0 0 1 11.8 8"/><path d="M8 20h10a4 4 0 0 0 0-8 5 5 0 0 0-9.6 1.5A3.3 3.3 0 0 0 8 20z"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 19h11a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.5 1.8A3.6 3.6 0 0 0 7 19z"/></symbol>
+  <symbol id="i-rain" viewBox="0 0 24 24"><path d="M7 15h11a4 4 0 0 0 0-8 5.5 5.5 0 0 0-10.6 1.6A3.2 3.2 0 0 0 7 15z"/><path d="M8 18l-1 3M12 18l-1 3M16 18l-1 3"/></symbol>
+  <symbol id="i-storm" viewBox="0 0 24 24"><path d="M7 15h11a4 4 0 0 0 0-8 5.5 5.5 0 0 0-10.6 1.6A3.2 3.2 0 0 0 7 15z"/><path d="M13 15l-2 4h3l-2 4"/></symbol>
+  <symbol id="i-fog" viewBox="0 0 24 24"><path d="M4 9h16M2 13h20M5 17h14"/></symbol>
+  <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
 </svg>
+
+<div class="topbar">
+  <div class="wrap topbar-in">
+    <img class="logo" src="data:image/png;base64,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" alt="OLYMPUS" width="165" height="34">
+    <div class="welcome" aria-label="ようこそ">
+      <div class="w-panel">
+        <div class="w-greet" id="w-greet">ようこそ</div>
+        <div class="w-date" id="w-date">-</div>
+        <div class="w-lunar" id="w-lunar"></div>
+      </div>
+      <div class="w-panel">
+        <div class="w-label"><svg class="ico"><use href="#i-clock"/></svg>現在時刻 · TIME · GIỜ</div>
+        <div class="w-clocks">
+          <div class="w-clock"><span class="c-name">日本<span class="sub">Japan · JST</span></span><span class="c-time" id="t-jst">--:--</span></div>
+          <div class="w-clock"><span class="c-name">ベトナム<span class="sub">Việt Nam · ICT</span></span><span class="c-time" id="t-ict">--:--</span></div>
+        </div>
+      </div>
+      <div class="w-panel">
+        <div class="w-label"><svg class="ico"><use href="#i-sun"/></svg>天気 · WEATHER · THỜI TIẾT</div>
+        <ul class="w-wx" id="w-wx"></ul>
+        <div class="w-src" id="w-src"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <header class="hero">
   <div class="wrap">
     <div class="hero-top">
-      <div class="brandmark">OEPM · OLYMPUS VIETNAM</div>
+      <div class="brandmark">OEPM · OLYMPUS VIETNAM · OPERATIONAL EXCELLENCE PMO</div>
       <div class="hero-meta">
         <span class="tag"><svg class="ico"><use href="#i-alert"/></svg><b>サンプルデータ</b> Sample data · Dữ liệu mẫu</span>
         <span class="tag"><svg class="ico"><use href="#i-cal"/></svg>基準日 <b class="num">2026-11-13</b></span>
@@ -486,6 +558,144 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
   function ic(id, cls) { return '<svg class="ico' + (cls ? ' ' + cls : '') + '"><use href="#i-' + id + '"/></svg>'; }
   function sum(a) { return a.reduce(function (x, y) { return x + y; }, 0); }
   function daysTo(d) { return Math.round((new Date(d + "T00:00:00") - ASOF) / 86400000); }
+
+  /* Vietnamese lunar calendar (Ho Ngoc Duc's algorithm, time zone UTC+7) */
+  var LUNAR = (function () {
+    function INT(d) { return Math.floor(d); }
+    function jdFromDate(dd, mm, yy) {
+      var a = INT((14 - mm) / 12), y = yy + 4800 - a, m = mm + 12 * a - 3;
+      var jd = dd + INT((153 * m + 2) / 5) + 365 * y + INT(y / 4) - INT(y / 100) + INT(y / 400) - 32045;
+      if (jd < 2299161) jd = dd + INT((153 * m + 2) / 5) + 365 * y + INT(y / 4) - 32083;
+      return jd;
+    }
+    function newMoon(k) {
+      var T = k / 1236.85, T2 = T * T, T3 = T2 * T, dr = Math.PI / 180;
+      var Jd1 = 2415020.75933 + 29.53058868 * k + 0.0001178 * T2 - 0.000000155 * T3;
+      Jd1 += 0.00033 * Math.sin((166.56 + 132.87 * T - 0.009173 * T2) * dr);
+      var M = 359.2242 + 29.10535608 * k - 0.0000333 * T2 - 0.00000347 * T3;
+      var Mpr = 306.0253 + 385.81691806 * k + 0.0107306 * T2 + 0.00001236 * T3;
+      var F = 21.2964 + 390.67050646 * k - 0.0016528 * T2 - 0.00000239 * T3;
+      var C1 = (0.1734 - 0.000393 * T) * Math.sin(M * dr) + 0.0021 * Math.sin(2 * dr * M);
+      C1 = C1 - 0.4068 * Math.sin(Mpr * dr) + 0.0161 * Math.sin(dr * 2 * Mpr);
+      C1 = C1 - 0.0004 * Math.sin(dr * 3 * Mpr);
+      C1 = C1 + 0.0104 * Math.sin(dr * 2 * F) - 0.0051 * Math.sin(dr * (M + Mpr));
+      C1 = C1 - 0.0074 * Math.sin(dr * (M - Mpr)) + 0.0004 * Math.sin(dr * (2 * F + M));
+      C1 = C1 - 0.0004 * Math.sin(dr * (2 * F - M)) - 0.0006 * Math.sin(dr * (2 * F + Mpr));
+      C1 = C1 + 0.0010 * Math.sin(dr * (2 * F - Mpr)) + 0.0005 * Math.sin(dr * (2 * Mpr + M));
+      var deltat = T < -11 ? 0.001 + 0.000839 * T + 0.0002261 * T2 - 0.00000845 * T3 - 0.000000081 * T * T3
+                           : -0.000278 + 0.000265 * T + 0.000262 * T2;
+      return Jd1 + C1 - deltat;
+    }
+    function sunLongitude(jdn) {
+      var T = (jdn - 2451545.0) / 36525, T2 = T * T, dr = Math.PI / 180;
+      var M = 357.52910 + 35999.05030 * T - 0.0001559 * T2 - 0.00000048 * T * T2;
+      var L0 = 280.46645 + 36000.76983 * T + 0.0003032 * T2;
+      var DL = (1.914600 - 0.004817 * T - 0.000014 * T2) * Math.sin(dr * M);
+      DL += (0.019993 - 0.000101 * T) * Math.sin(dr * 2 * M) + 0.000290 * Math.sin(dr * 3 * M);
+      var L = (L0 + DL) * dr;
+      return L - Math.PI * 2 * INT(L / (Math.PI * 2));
+    }
+    function getSunLongitude(dn, tz) { return INT(sunLongitude(dn - 0.5 - tz / 24) / Math.PI * 6); }
+    function getNewMoonDay(k, tz) { return INT(newMoon(k) + 0.5 + tz / 24); }
+    function getLunarMonth11(yy, tz) {
+      var off = jdFromDate(31, 12, yy) - 2415021, k = INT(off / 29.530588853), nm = getNewMoonDay(k, tz);
+      if (getSunLongitude(nm, tz) >= 9) nm = getNewMoonDay(k - 1, tz);
+      return nm;
+    }
+    function getLeapMonthOffset(a11, tz) {
+      var k = INT((a11 - 2415021.076998695) / 29.530588853 + 0.5), last, i = 1;
+      var arc = getSunLongitude(getNewMoonDay(k + i, tz), tz);
+      do { last = arc; i++; arc = getSunLongitude(getNewMoonDay(k + i, tz), tz); } while (arc !== last && i < 14);
+      return i - 1;
+    }
+    function solar2lunar(dd, mm, yy, tz) {
+      var dayNumber = jdFromDate(dd, mm, yy), k = INT((dayNumber - 2415021.076998695) / 29.530588853);
+      var monthStart = getNewMoonDay(k + 1, tz);
+      if (monthStart > dayNumber) monthStart = getNewMoonDay(k, tz);
+      var a11 = getLunarMonth11(yy, tz), b11 = a11, lunarYear;
+      if (a11 >= monthStart) { lunarYear = yy; a11 = getLunarMonth11(yy - 1, tz); }
+      else { lunarYear = yy + 1; b11 = getLunarMonth11(yy + 1, tz); }
+      var lunarDay = dayNumber - monthStart + 1, diff = INT((monthStart - a11) / 29), leap = 0, lunarMonth = diff + 11;
+      if (b11 - a11 > 365) {
+        var lmd = getLeapMonthOffset(a11, tz);
+        if (diff >= lmd) { lunarMonth = diff + 10; if (diff === lmd) leap = 1; }
+      }
+      if (lunarMonth > 12) lunarMonth -= 12;
+      if (lunarMonth >= 11 && diff < 4) lunarYear -= 1;
+      return { d: lunarDay, m: lunarMonth, y: lunarYear, leap: leap };
+    }
+    var CAN = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
+    var CHI = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
+    function canChi(y) { return CAN[(y + 6) % 10] + " " + CHI[(y + 8) % 12]; }
+    return { convert: function (dd, mm, yy) { return solar2lunar(dd, mm, yy, 7); }, canChi: canChi };
+  })();
+
+  /* Welcome widget: greeting, dates, clocks, weather */
+  var USER_NAME = ""; /* 表示名を入れる · set a display name, e.g. "Tran" */
+  function partsIn(tz, d) {
+    var p = {}; new Intl.DateTimeFormat("en-US", { timeZone: tz, year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "2-digit", second: "2-digit", hourCycle: "h23" })
+      .formatToParts(d).forEach(function (x) { p[x.type] = x.value; });
+    return { y: +p.year, m: +p.month, d: +p.day, h: +p.hour, mi: p.minute, s: p.second };
+  }
+  var WD = ["日", "月", "火", "水", "木", "金", "土"];
+  function renderWelcome() {
+    var now = new Date(), jp = partsIn("Asia/Tokyo", now), vn = partsIn("Asia/Ho_Chi_Minh", now);
+    var g = vn.h < 11 ? ["おはようございます", "Good morning · Chào buổi sáng"] : vn.h < 18 ? ["こんにちは", "Good afternoon · Chào buổi chiều"] : ["こんばんは", "Good evening · Chào buổi tối"];
+    document.getElementById("w-greet").innerHTML = g[0] + (USER_NAME ? "、" + USER_NAME + " さん" : "") + '<span class="sub">' + g[1] + (USER_NAME ? ", " + USER_NAME : "") + '</span>';
+    var wd = WD[new Date(Date.UTC(jp.y, jp.m - 1, jp.d)).getUTCDay()];
+    var era = "";
+    try { era = new Intl.DateTimeFormat("ja-JP-u-ca-japanese", { timeZone: "Asia/Tokyo", era: "long", year: "numeric" }).format(now); } catch (err) {}
+    document.getElementById("w-date").innerHTML = jp.y + "年" + jp.m + "月" + jp.d + "日（" + wd + "）" + (era ? "<small>" + era + "</small>" : "");
+    var lu = LUNAR.convert(vn.d, vn.m, vn.y);
+    document.getElementById("w-lunar").innerHTML = '<svg class="ico"><use href="#i-moon"/></svg><span>旧暦 <b>' + (lu.leap ? "閏" : "") + lu.m + "月" + lu.d + "日</b> · Âm lịch <b>" + lu.d + "/" + lu.m + (lu.leap ? " nhuận" : "") + "</b> năm " + LUNAR.canChi(lu.y) + "</span>";
+    document.getElementById("t-jst").innerHTML = jp.h + ":" + jp.mi + "<small>:" + jp.s + "</small>";
+    document.getElementById("t-ict").innerHTML = vn.h + ":" + vn.mi + "<small>:" + vn.s + "</small>";
+  }
+  renderWelcome();
+  setInterval(renderWelcome, 1000);
+
+  var CITIES = [
+    { ja: "東京", vi: "Tokyo", lat: 35.6895, lon: 139.6917, sample: [14, 1] },
+    { ja: "ホーチミン", vi: "TP.HCM", lat: 10.8231, lon: 106.6297, sample: [31, 3] },
+    { ja: "ドンナイ", vi: "Đồng Nai", lat: 10.9500, lon: 106.8400, sample: [30, 80] }
+  ];
+  function wmo(c) {
+    if (c === 0) return ["sun", "快晴", "Clear"];
+    if (c <= 2) return ["partly", "晴れ時々曇り", "Partly cloudy"];
+    if (c === 3) return ["cloud", "曇り", "Cloudy"];
+    if (c === 45 || c === 48) return ["fog", "霧", "Fog"];
+    if (c >= 51 && c <= 57) return ["rain", "霧雨", "Drizzle"];
+    if ((c >= 61 && c <= 67) || (c >= 80 && c <= 82)) return ["rain", c >= 80 ? "にわか雨" : "雨", c >= 80 ? "Showers" : "Rain"];
+    if ((c >= 71 && c <= 77) || c === 85 || c === 86) return ["snow", "雪", "Snow"];
+    if (c >= 95) return ["storm", "雷雨", "Thunderstorm"];
+    return ["cloud", "-", "-"];
+  }
+  function renderWx(rows, live, at) {
+    document.getElementById("w-wx").innerHTML = CITIES.map(function (c, i) {
+      var w = wmo(rows[i][1]);
+      return '<li><svg class="ico"><use href="#i-' + w[0] + '"/></svg><span class="city">' + c.ja + '<span class="sub">' + c.vi + '</span></span>' +
+        '<span class="tmp"><b>' + Math.round(rows[i][0]) + '°</b><span>' + w[1] + ' · ' + w[2] + '</span></span></li>';
+    }).join("");
+    document.getElementById("w-src").textContent = live ? "Open-Meteo · 更新 " + at : "サンプル（取得できません）· Sample, live weather unavailable";
+  }
+  function loadWx() {
+    var url = "https://api.open-meteo.com/v1/forecast?latitude=" + CITIES.map(function (c) { return c.lat; }).join(",") +
+      "&longitude=" + CITIES.map(function (c) { return c.lon; }).join(",") + "&current=temperature_2m,weather_code&timezone=auto";
+    var ctl = typeof AbortController !== "undefined" ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
+    fetch(url, ctl ? { signal: ctl.signal } : {}).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) {
+      clearTimeout(timer);
+      var arr = Array.isArray(j) ? j : [j];
+      var rows = arr.map(function (x) { return [x.current.temperature_2m, x.current.weather_code]; });
+      if (rows.length !== CITIES.length) throw new Error("shape");
+      var vn = partsIn("Asia/Ho_Chi_Minh", new Date());
+      renderWx(rows, true, vn.h + ":" + vn.mi + " ICT");
+    }).catch(function () { clearTimeout(timer); renderWx(CITIES.map(function (c) { return c.sample; }), false); });
+  }
+  renderWx(CITIES.map(function (c) { return c.sample; }), false);
+  loadWx();
+  setInterval(loadWx, 30 * 60 * 1000);
+
 
   var AGENTS = [
     { name: "Hiruma", role: "プロジェクトアシスタント・チームリーダー", sub: "Lead Project Assistant · Trợ lý dự án trưởng nhóm", weekly: [2,3,2,3,2,2,2,2], open: 5, ontime: 94 },
