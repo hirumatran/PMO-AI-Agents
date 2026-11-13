@@ -36,7 +36,7 @@ New production line for the **Single-use Endoscopic Camera**, Olympus Vietnam.
 - Clear hierarchy: one H1, then H2/H3. Same heading style throughout.
 - Tables for comparisons, numbers and status. Bullets for lists. No walls of text.
 - Decks, docs, HTML: restrained palette, generous whitespace, executive-grade.
-- No emoji, no decorative symbols, no clip-art icons.
+- No emoji or clip-art. Clean line icons are OK where they help scanning (mail, calendar, tasks, alerts).
 - Colour, type and layout follow [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md). Olympus blue `#001C71` is the brand colour; yellow `#EAA100` is the only accent, thin rules only.
 - Documents, dashboards and data: trilingual. **Japanese is the main language**, English and Vietnamese are sub-text.
 - Fonts: Noto Sans JP for Japanese, Noto Sans for English and Vietnamese (see DESIGN_SYSTEM.md).

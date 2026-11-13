@@ -5,9 +5,9 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-/* Layout: one left-aligned 1024px column on white. One blue band (header), one grey band (Microsoft 365). Olympus design system, light only by design. */
+/* Layout: one left-aligned 1120px column on white. Blue header band, grey Microsoft 365 band. Olympus design system, light only by design. Bold edition: solid blue blocks, big numbers, line icons. */
 :root {
   --color-bg: #FFFFFF;
   --color-surface: #F2F2F2;
@@ -17,198 +17,286 @@
   --color-body: #333333;
   --color-muted: #666666;
   --color-brand: #001C71;
+  --color-brand-mid: #4A5C99;
   --color-brand-tint: #E8EBF3;
   --color-on-brand: #FFFFFF;
   --color-accent: #EAA100;
-  --color-critical: #A4262C;   /* status only: overdue, high risk */
+  --color-critical: #B3261E;      /* status only: overdue, high priority */
+  --color-critical-tint: #FBECEB;
   --font-sans: "Noto Sans JP", "Noto Sans", "Yu Gothic", Meiryo, sans-serif;
   --font-vi: "Noto Sans", "Noto Sans JP", Arial, sans-serif;
   --space-1: 8px; --space-2: 16px; --space-3: 24px; --space-4: 40px; --space-5: 64px;
   --radius: 2px;
   --border: 1px solid var(--color-border);
-  --content-max: 1024px;
+  --content-max: 1120px;
   color-scheme: light;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; }
-body {
-  background: var(--color-bg);
-  color: var(--color-body);
-  font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 2;
-  -webkit-font-smoothing: antialiased;
-}
+body { background: var(--color-bg); color: var(--color-body); font-family: var(--font-sans); font-size: 16px; line-height: 2; -webkit-font-smoothing: antialiased; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--color-brand); }
 table { font-size: inherit; }
-.wrap {
-  max-width: calc(var(--content-max) + 2 * 16px);
-  margin: 0 auto;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-}
-.num { font-variant-numeric: tabular-nums; }
+button { font: inherit; }
+.wrap { max-width: calc(var(--content-max) + 32px); margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.num { font-variant-numeric: tabular-nums; font-family: var(--font-vi); }
 .sub { display: block; font-family: var(--font-vi); font-size: 13px; line-height: 1.5; color: var(--color-muted); font-weight: 400; letter-spacing: 0; }
-.on-brand .sub { color: rgba(255,255,255,.72); }
-.label { font-size: 13px; font-weight: 700; letter-spacing: 1px; color: var(--color-brand); line-height: 1.5; }
-:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 2px; }
+.ico { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }
 
-/* Header band */
+/* Header */
 .hero { background: var(--color-brand); color: var(--color-on-brand); }
-.hero .wrap { padding-block: var(--space-4) var(--space-3); display: grid; gap: var(--space-2); }
-.hero-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: var(--space-2); }
-.brandmark { font-size: 13px; font-weight: 700; letter-spacing: 2px; line-height: 1.5; }
-.brandmark::after { content: ""; display: block; width: 40px; border-bottom: 3px solid var(--color-accent); margin-top: 6px; }
-.hero h1 { margin: 0; font-size: 40px; font-weight: 700; line-height: 1.3; color: var(--color-on-brand); text-wrap: balance; }
-.hero h1 .sub { font-size: 16px; margin-top: 6px; }
+.hero .wrap { padding-block: var(--space-4) var(--space-4); display: grid; gap: var(--space-3); }
+.hero-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-2); }
+.brandmark { font-size: 14px; font-weight: 900; letter-spacing: 3px; line-height: 1.5; font-family: var(--font-vi); }
+.brandmark::after { content: ""; display: block; width: 48px; border-bottom: 3px solid var(--color-accent); margin-top: 8px; }
+.hero h1 { margin: 0; font-size: 44px; font-weight: 900; line-height: 1.25; text-wrap: balance; }
+.hero h1 .sub { color: rgba(255,255,255,.78); font-size: 17px; margin-top: 10px; font-weight: 500; }
 .hero-meta { display: flex; flex-wrap: wrap; gap: var(--space-1); }
-.tag { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; line-height: 1.5; padding: 4px 10px; border: 1px solid rgba(255,255,255,.5); border-radius: var(--radius); }
+.tag { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; line-height: 1.5; padding: 6px 12px; background: rgba(255,255,255,.12); border-radius: var(--radius); }
+.tag .ico { width: 18px; height: 18px; }
 .tag b { font-weight: 700; }
 
-/* Sections */
+/* Section heads */
 section { padding-block: var(--space-5) 0; }
-section > .wrap > h2, .band h2 {
-  margin: 0 0 var(--space-3); font-size: 28px; font-weight: 700; line-height: 1.6; letter-spacing: 1.75px; color: var(--color-ink);
-}
-h2 .sub { letter-spacing: 0; }
-h3 { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.5; color: var(--color-ink); }
-h3::before { content: "\203A"; color: var(--color-brand); margin-right: 6px; font-weight: 700; }
+.sec-head { display: flex; align-items: center; gap: var(--space-2); margin: 0 0 var(--space-3); }
+.sec-icon { width: 52px; height: 52px; flex: none; display: grid; place-items: center; background: var(--color-brand); color: var(--color-on-brand); border-radius: var(--radius); }
+.sec-icon .ico { width: 28px; height: 28px; }
+.sec-head h2 { margin: 0; font-size: 28px; font-weight: 900; line-height: 1.4; letter-spacing: 1.5px; color: var(--color-ink); }
+.sec-head h2 .sub { letter-spacing: 0; font-weight: 500; }
+.sec-head .spacer { flex: 1; }
 
 /* KPI tiles */
-.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
-.kpi { border: var(--border); border-radius: var(--radius); padding: var(--space-2) var(--space-3); display: grid; gap: 4px; align-content: start; }
-.kpi .v { font-size: 36px; font-weight: 700; line-height: 1.2; color: var(--color-ink); font-family: var(--font-vi); }
-.kpi .v small { font-size: 16px; font-weight: 500; color: var(--color-muted); margin-left: 4px; }
-.kpi .k { font-size: 14px; font-weight: 700; line-height: 1.5; color: var(--color-body); }
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); }
+.kpi { border: var(--border); border-top: 4px solid var(--color-brand); border-radius: var(--radius); padding: var(--space-2) var(--space-3) var(--space-3); display: grid; gap: 6px; align-content: start; }
+.kpi-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.kpi-icon { width: 44px; height: 44px; display: grid; place-items: center; background: var(--color-brand-tint); color: var(--color-brand); border-radius: var(--radius); flex: none; }
+.kpi .k { font-size: 14px; font-weight: 700; line-height: 1.5; color: var(--color-ink); }
+.kpi .v { font-size: 56px; font-weight: 900; line-height: 1.05; color: var(--color-ink); font-family: var(--font-vi); }
+.kpi .v small { font-size: 18px; font-weight: 700; color: var(--color-muted); margin-left: 4px; }
 .kpi .note { font-size: 12px; line-height: 1.5; color: var(--color-muted); }
-.kpi.lead { background: var(--color-brand-tint); border-color: var(--color-brand-tint); }
-.kpi.lead .v { color: var(--color-brand); }
+.kpi .note b { color: var(--color-critical); }
+.kpi.lead { background: var(--color-brand); border-color: var(--color-brand); border-top-color: var(--color-accent); color: var(--color-on-brand); }
+.kpi.lead .k, .kpi.lead .v { color: var(--color-on-brand); }
+.kpi.lead .sub, .kpi.lead .note, .kpi.lead .v small { color: rgba(255,255,255,.75); }
+.kpi.lead .kpi-icon { background: rgba(255,255,255,.14); color: var(--color-on-brand); }
 
 /* Timeline */
 .tl { border: var(--border); border-radius: var(--radius); padding: var(--space-3); overflow-x: auto; }
-.tl-inner { min-width: 640px; display: grid; gap: 10px; }
-.tl-row { display: grid; grid-template-columns: 220px 1fr; align-items: center; gap: var(--space-2); }
-.tl-name { font-size: 14px; font-weight: 700; line-height: 1.4; color: var(--color-ink); }
+.tl-inner { min-width: 680px; display: grid; gap: 12px; }
+.tl-row { display: grid; grid-template-columns: 230px 1fr; align-items: center; gap: var(--space-2); }
+.tl-name { font-size: 15px; font-weight: 700; line-height: 1.4; color: var(--color-ink); }
 .tl-name .sub { font-size: 12px; }
-.tl-track { position: relative; height: 28px; }
-.tl-axis .tl-track { height: 22px; border-bottom: var(--border); }
-.tick { position: absolute; bottom: 2px; font-size: 12px; line-height: 1; color: var(--color-muted); transform: translateX(-50%); font-family: var(--font-vi); }
+.tl-track { position: relative; height: 32px; }
+.tl-axis .tl-track { height: 24px; border-bottom: 2px solid var(--color-ink); }
+.tick { position: absolute; bottom: 4px; font-size: 13px; font-weight: 700; line-height: 1; color: var(--color-ink); transform: translateX(-50%); font-family: var(--font-vi); }
 .grid-line { position: absolute; top: 0; bottom: 0; border-left: 1px solid var(--color-surface-2); }
-.bar { position: absolute; top: 6px; height: 16px; background: var(--color-brand); border-radius: var(--radius); }
+.bar { position: absolute; top: 6px; height: 20px; background: var(--color-brand); border-radius: var(--radius); }
 .bar.tbc { background: repeating-linear-gradient(135deg, var(--color-brand) 0 6px, var(--color-brand-tint) 6px 10px); }
-.bar-label { position: absolute; top: 4px; font-size: 12px; line-height: 20px; white-space: nowrap; color: var(--color-body); font-family: var(--font-vi); }
-.diamond { position: absolute; top: 7px; width: 14px; height: 14px; background: var(--color-brand); transform: translateX(-50%) rotate(45deg); }
-.today { position: absolute; top: 0; bottom: 0; border-left: 2px solid var(--color-accent); }
-.today-cap { position: absolute; top: -2px; transform: translateX(6px); font-size: 12px; line-height: 1; font-weight: 700; color: var(--color-ink); white-space: nowrap; font-family: var(--font-vi); }
-.tl-foot { margin-top: var(--space-2); font-size: 12px; line-height: 1.6; color: var(--color-muted); }
+.bar-label { position: absolute; top: 6px; font-size: 13px; font-weight: 700; line-height: 20px; white-space: nowrap; color: var(--color-ink); font-family: var(--font-vi); }
+.diamond { position: absolute; top: 8px; width: 16px; height: 16px; background: var(--color-brand); transform: translateX(-50%) rotate(45deg); }
+.today { position: absolute; top: 0; bottom: 0; border-left: 3px solid var(--color-accent); }
+.today-cap { position: absolute; top: -4px; transform: translateX(8px); font-size: 12px; line-height: 1; font-weight: 900; color: var(--color-ink); white-space: nowrap; }
+.tl-foot { margin: var(--space-2) 0 0; font-size: 12px; line-height: 1.6; color: var(--color-muted); }
 
 /* Agents */
 .agents { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
-.agent { border: var(--border); border-radius: var(--radius); display: grid; grid-template-rows: auto auto auto 1fr; }
-.agent-head { display: grid; grid-template-columns: 64px 1fr; gap: var(--space-2); padding: var(--space-2) var(--space-2) 0; align-items: center; }
-.agent-head img { width: 64px; height: 64px; border-radius: var(--radius); display: block; background: var(--color-surface); object-fit: cover; }
-.agent-name { font-size: 18px; font-weight: 700; line-height: 1.3; color: var(--color-ink); font-family: var(--font-vi); }
-.agent-role { font-size: 13px; line-height: 1.5; color: var(--color-body); font-weight: 500; }
-.agent-role .sub { font-size: 12px; }
-.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: var(--space-2) var(--space-2) 0; border-top: var(--border); border-bottom: var(--border); }
-.stat { padding: 10px 0; display: grid; gap: 2px; }
-.stat + .stat { border-left: var(--border); padding-left: 12px; }
-.stat .v { font-size: 22px; font-weight: 700; line-height: 1.2; color: var(--color-ink); font-family: var(--font-vi); }
-.stat .k { font-size: 12px; line-height: 1.4; color: var(--color-muted); }
+.agent { border: var(--border); border-radius: var(--radius); display: grid; grid-template-rows: auto auto auto 1fr; overflow: hidden; }
+.agent-head { display: grid; grid-template-columns: 76px 1fr; gap: var(--space-2); padding: var(--space-2); align-items: center; background: var(--color-brand); color: var(--color-on-brand); }
+.agent-head img { width: 76px; height: 76px; border-radius: var(--radius); display: block; object-fit: cover; border: 2px solid var(--color-on-brand); }
+.agent-name { font-size: 22px; font-weight: 900; line-height: 1.2; font-family: var(--font-vi); letter-spacing: .5px; }
+.agent-role { font-size: 13px; line-height: 1.5; font-weight: 500; margin-top: 4px; }
+.agent-role .sub { color: rgba(255,255,255,.72); font-size: 12px; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: var(--border); }
+.stat { padding: 12px var(--space-2); display: grid; gap: 2px; }
+.stat + .stat { border-left: var(--border); }
+.stat .v { font-size: 30px; font-weight: 900; line-height: 1.1; color: var(--color-ink); }
+.stat .v.good { color: var(--color-brand); }
+.stat .k { font-size: 12px; line-height: 1.4; color: var(--color-muted); font-weight: 500; }
 .spark { padding: var(--space-2) var(--space-2) 0; display: grid; gap: 4px; }
-.spark-cap { display: flex; justify-content: space-between; font-size: 12px; line-height: 1.5; color: var(--color-muted); font-family: var(--font-vi); }
-.spark svg { width: 100%; height: 48px; display: block; overflow: visible; }
-.focus { list-style: none; margin: 0; padding: var(--space-2); display: grid; gap: 8px; align-content: start; }
-.focus li { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; font-size: 13px; line-height: 1.5; color: var(--color-body); padding-top: 8px; border-top: 1px solid var(--color-surface-2); }
+.spark-cap { display: flex; justify-content: space-between; font-size: 12px; line-height: 1.5; color: var(--color-muted); }
+.spark-cap b { color: var(--color-ink); }
+.spark svg { width: 100%; height: 52px; display: block; overflow: visible; }
+.focus { list-style: none; margin: 0; padding: var(--space-2); display: grid; gap: 10px; align-content: start; }
+.focus li { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; font-size: 13px; font-weight: 500; line-height: 1.5; color: var(--color-ink); padding-top: 10px; border-top: 1px solid var(--color-surface-2); }
 .focus li:first-child { border-top: 0; padding-top: 0; }
 .focus li .sub { font-size: 11px; }
 
-/* Status chips */
-.chip { display: inline-block; white-space: nowrap; font-size: 12px; font-weight: 700; line-height: 1.5; padding: 1px 8px; border-radius: var(--radius); border: 1px solid var(--color-border); color: var(--color-body); background: var(--color-bg); }
-.chip.prog { border-color: var(--color-brand); color: var(--color-brand); }
-.chip.wait { background: var(--color-brand); border-color: var(--color-brand); color: var(--color-on-brand); }
-.chip.late { border-color: var(--color-critical); color: var(--color-critical); }
-.chip.done { background: var(--color-surface); border-color: var(--color-surface); color: var(--color-muted); }
-.chip.todo { color: var(--color-muted); }
+/* Chips */
+.chip { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 12px; font-weight: 700; line-height: 1.5; padding: 2px 10px; border-radius: var(--radius); border: 1px solid transparent; }
+.chip.prog { background: var(--color-brand); color: var(--color-on-brand); }
+.chip.wait { background: var(--color-ink); color: var(--color-on-brand); }
+.chip.late { background: var(--color-critical); color: var(--color-on-brand); }
+.chip.done { background: var(--color-surface); color: var(--color-muted); }
+.chip.todo { border-color: var(--color-brand); color: var(--color-brand); background: var(--color-bg); }
+
+/* Toggle buttons (filters) */
+.seg { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.seg button { font-size: 13px; font-weight: 700; line-height: 1.5; padding: 7px 16px; cursor: pointer; border: 1px solid var(--color-brand); color: var(--color-brand); background: var(--color-bg); border-radius: var(--radius); display: inline-flex; align-items: center; gap: 6px; }
+.seg button:hover { background: var(--color-brand-tint); }
+.seg button[aria-pressed="true"] { background: var(--color-brand); color: var(--color-on-brand); }
+.seg-label { font-size: 12px; font-weight: 700; color: var(--color-muted); line-height: 1.5; letter-spacing: 1px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.seg-label .ico { width: 16px; height: 16px; }
 
 /* Task table */
-.filters { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-bottom: var(--space-2); }
-.filters button {
-  font: inherit; font-size: 13px; font-weight: 700; line-height: 1.5; padding: 6px 14px; cursor: pointer;
-  border: 1px solid var(--color-brand); color: var(--color-brand); background: var(--color-bg); border-radius: var(--radius);
-}
-.filters button[aria-pressed="true"] { background: var(--color-brand); color: var(--color-on-brand); }
-.filters button:hover { background: var(--color-brand-tint); }
-.filters button[aria-pressed="true"]:hover { background: var(--color-brand); }
+.task-tools { margin-bottom: var(--space-2); }
 .table-wrap { overflow-x: auto; border: var(--border); border-radius: var(--radius); }
-table.tasks { width: 100%; min-width: 720px; border-collapse: collapse; line-height: 1.5; font-size: 14px; }
-.tasks th { text-align: left; font-size: 12px; font-weight: 700; color: var(--color-ink); background: var(--color-surface); padding: 10px 12px; border-bottom: var(--border); white-space: nowrap; }
-.tasks th .sub { font-size: 11px; font-weight: 400; }
-.tasks td { padding: 10px 12px; border-bottom: 1px solid var(--color-surface-2); vertical-align: top; }
+table.tasks { width: 100%; min-width: 760px; border-collapse: collapse; line-height: 1.5; font-size: 14px; }
+.tasks th { text-align: left; font-size: 12px; font-weight: 700; color: var(--color-on-brand); background: var(--color-brand); padding: 12px; white-space: nowrap; }
+.tasks th .sub { font-size: 11px; color: rgba(255,255,255,.72); }
+.tasks td { padding: 12px; border-bottom: 1px solid var(--color-surface-2); vertical-align: top; }
+.tasks tbody tr:nth-child(even) td { background: #FAFAFA; }
 .tasks tr:last-child td { border-bottom: 0; }
+.tasks td .t { font-weight: 700; color: var(--color-ink); }
 .tasks td .sub { font-size: 12px; }
-.tasks td.num { white-space: nowrap; }
-.tasks tr.is-late td:first-child { box-shadow: inset 3px 0 0 var(--color-critical); }
-.who { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; font-family: var(--font-vi); font-weight: 500; }
-.who img { width: 24px; height: 24px; border-radius: var(--radius); }
-.prio { font-weight: 700; white-space: nowrap; }
-.prio.h { color: var(--color-ink); }
-.prio.m, .prio.l { color: var(--color-muted); font-weight: 500; }
+.tasks td.num { white-space: nowrap; font-weight: 700; color: var(--color-ink); }
+.tasks tr.is-late td { background: var(--color-critical-tint) !important; }
+.tasks tr.is-late td:first-child { box-shadow: inset 4px 0 0 var(--color-critical); }
+.who { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; font-family: var(--font-vi); font-weight: 700; color: var(--color-ink); }
+.who img { width: 28px; height: 28px; border-radius: var(--radius); }
+.prio { font-weight: 900; white-space: nowrap; font-size: 15px; }
+.prio.h { color: var(--color-critical); }
+.prio.m { color: var(--color-brand); }
+.prio.l { color: var(--color-muted); }
 
-/* M365 band */
+/* M365 band with tabs */
 .band { background: var(--color-surface); margin-top: var(--space-5); }
 .band .wrap { padding-block: var(--space-5); }
-.notice { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-2); align-items: center; background: var(--color-bg); border-left: 3px solid var(--color-accent); padding: 12px var(--space-2); margin-bottom: var(--space-3); font-size: 14px; line-height: 1.6; }
-.notice b { color: var(--color-ink); }
+.notice { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-2); align-items: center; background: var(--color-bg); border-left: 4px solid var(--color-accent); padding: 12px var(--space-2); margin-bottom: var(--space-3); font-size: 14px; line-height: 1.6; }
+.notice b { color: var(--color-ink); font-weight: 900; }
+.tabs { display: flex; gap: 0; border-bottom: 3px solid var(--color-brand); flex-wrap: wrap; }
+.tab { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; border: 0; background: var(--color-surface-2); color: var(--color-ink); font-size: 16px; font-weight: 900; line-height: 1.3; cursor: pointer; border-radius: var(--radius) var(--radius) 0 0; margin-right: 4px; font-family: var(--font-vi); }
+.tab .ico { width: 26px; height: 26px; }
+.tab .cnt { font-size: 12px; font-weight: 900; padding: 1px 8px; border-radius: var(--radius); background: var(--color-critical); color: var(--color-on-brand); }
+.tab:hover { background: var(--color-border); }
+.tab[aria-selected="true"] { background: var(--color-brand); color: var(--color-on-brand); }
+.tabpanel { background: var(--color-bg); border: var(--border); border-top: 0; padding: var(--space-3); }
 .boxes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
-.box { background: var(--color-bg); border: var(--border); border-radius: var(--radius); padding: var(--space-2) var(--space-3) var(--space-3); display: grid; gap: var(--space-1); align-content: start; }
-.box-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-1); flex-wrap: wrap; }
-.src { font-size: 12px; font-weight: 700; letter-spacing: 1px; color: var(--color-brand); line-height: 1.5; font-family: var(--font-vi); }
-.box ul { list-style: none; margin: 0; padding: 0; display: grid; }
-.box li { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 10px 0; border-top: 1px solid var(--color-surface-2); font-size: 14px; line-height: 1.5; color: var(--color-body); }
+.box { border: var(--border); border-radius: var(--radius); display: grid; align-content: start; }
+.box.full { grid-column: 1 / -1; }
+.box-head { display: flex; align-items: center; gap: 12px; padding: 12px var(--space-2); border-bottom: 2px solid var(--color-ink); }
+.box-icon { width: 40px; height: 40px; flex: none; display: grid; place-items: center; background: var(--color-brand-tint); color: var(--color-brand); border-radius: var(--radius); }
+.box-head h3 { margin: 0; font-size: 17px; font-weight: 900; line-height: 1.4; color: var(--color-ink); flex: 1; min-width: 0; }
+.box-head h3 .sub { font-weight: 500; font-size: 12px; }
+.box-head .count { font-size: 28px; font-weight: 900; color: var(--color-brand); line-height: 1; font-family: var(--font-vi); }
+.box ul { list-style: none; margin: 0; padding: 0 var(--space-2); display: grid; }
+.box li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; padding: 12px 0; border-top: 1px solid var(--color-surface-2); font-size: 14px; line-height: 1.5; align-items: start; }
 .box li:first-child { border-top: 0; }
-.box li .t { color: var(--color-ink); font-weight: 500; min-width: 0; }
+.li-ico { width: 32px; height: 32px; display: grid; place-items: center; border-radius: var(--radius); background: var(--color-surface); color: var(--color-ink); margin-top: 2px; }
+.li-ico .ico { width: 18px; height: 18px; }
+.li-ico.hot { background: var(--color-critical); color: var(--color-on-brand); }
+.li-ico.blue { background: var(--color-brand); color: var(--color-on-brand); }
+.box li .t { color: var(--color-ink); font-weight: 700; }
+.box li .from { font-size: 12px; font-weight: 700; color: var(--color-brand); font-family: var(--font-vi); }
 .box li .sub { font-size: 12px; }
-.box li time, .box li .meta { font-size: 12px; color: var(--color-muted); white-space: nowrap; font-family: var(--font-vi); }
+.box li time { font-size: 13px; font-weight: 700; color: var(--color-ink); white-space: nowrap; font-family: var(--font-vi); text-align: right; }
+.box li time .sub { font-weight: 400; }
 
 /* Risks */
+.risk-tools { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: var(--space-3); margin-bottom: var(--space-3); align-items: start; }
+.risk-filters { display: grid; gap: var(--space-2); }
+.matrix { display: grid; grid-template-columns: 76px repeat(3, minmax(0, 1fr)); gap: 4px; }
+.mx-h { font-size: 12px; font-weight: 700; line-height: 1.3; color: var(--color-ink); display: grid; place-items: center; text-align: center; padding: 4px; }
+.mx-h .sub { font-size: 11px; }
+.mx-corner { font-size: 11px; color: var(--color-muted); line-height: 1.3; display: grid; place-items: center; text-align: center; }
+.cell { min-height: 64px; border: 0; border-radius: var(--radius); cursor: pointer; display: grid; place-items: center; font-size: 28px; font-weight: 900; line-height: 1; font-family: var(--font-vi); background: var(--color-surface); color: var(--color-muted); outline-offset: 0; }
+.cell.s5 { background: var(--color-brand); color: var(--color-on-brand); }
+.cell.s4 { background: var(--color-brand-mid); color: var(--color-on-brand); }
+.cell.s3 { background: var(--color-brand-tint); color: var(--color-brand); }
+.cell.s6 { background: var(--color-critical); color: var(--color-on-brand); }
+.cell.zero { background: var(--color-bg); color: var(--color-border); border: 1px dashed var(--color-border); }
+.cell[aria-pressed="true"] { box-shadow: inset 0 0 0 4px var(--color-accent); }
+.cell:hover { filter: brightness(1.08); }
+.risk-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-1); margin-bottom: var(--space-2); }
+.risk-count { font-size: 14px; font-weight: 700; color: var(--color-ink); }
+.risk-count .num { font-size: 22px; font-weight: 900; color: var(--color-brand); margin-right: 4px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; line-height: 1.4; padding: 9px 16px; border-radius: var(--radius); text-decoration: none; cursor: pointer; white-space: nowrap; border: 1px solid var(--color-brand); }
+.btn .ico { width: 18px; height: 18px; }
+.btn.primary { background: var(--color-brand); color: var(--color-on-brand); }
+.btn.primary:hover { background: #00145A; }
+.btn.ghost { background: var(--color-bg); color: var(--color-brand); }
+.btn.ghost:hover { background: var(--color-brand-tint); }
 .risks { display: grid; gap: var(--space-2); }
-.risk { display: grid; grid-template-columns: 88px minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-3); border: var(--border); border-radius: var(--radius); padding: var(--space-2) var(--space-3); align-items: start; }
-.risk.hi { border-left: 3px solid var(--color-critical); }
-.risk.md { border-left: 3px solid var(--color-muted); }
-.sev { font-size: 13px; font-weight: 700; line-height: 1.5; }
-.risk.hi .sev { color: var(--color-critical); }
-.risk.md .sev { color: var(--color-muted); }
-.risk .what { font-size: 15px; font-weight: 700; color: var(--color-ink); line-height: 1.6; }
-.risk .act { font-size: 14px; line-height: 1.6; }
-.risk .act .label { display: block; }
+.risk { display: grid; grid-template-columns: 72px minmax(0, 1fr) minmax(0, 300px); gap: var(--space-3); border: var(--border); border-radius: var(--radius); padding: var(--space-3); align-items: start; }
+.risk.p-h { border-left: 6px solid var(--color-critical); }
+.risk.p-m { border-left: 6px solid var(--color-brand); }
+.risk.p-l { border-left: 6px solid var(--color-muted); }
+.sev-box { width: 72px; height: 72px; display: grid; place-items: center; align-content: center; border-radius: var(--radius); color: var(--color-on-brand); text-align: center; }
+.sev-box b { font-size: 32px; font-weight: 900; line-height: 1; }
+.sev-box span { font-size: 11px; font-weight: 700; line-height: 1.4; font-family: var(--font-vi); margin-top: 4px; }
+.p-h .sev-box { background: var(--color-critical); }
+.p-m .sev-box { background: var(--color-brand); }
+.p-l .sev-box { background: var(--color-muted); }
+.risk-id { font-size: 12px; font-weight: 900; letter-spacing: 1px; color: var(--color-muted); font-family: var(--font-vi); line-height: 1.5; }
+.risk .what { font-size: 18px; font-weight: 900; color: var(--color-ink); line-height: 1.5; margin-top: 2px; }
+.risk .impact { margin-top: 8px; font-size: 13px; line-height: 1.6; color: var(--color-body); }
+.risk .impact b { color: var(--color-ink); }
+.urg { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 900; line-height: 1.4; padding: 4px 10px; border-radius: var(--radius); margin-bottom: 10px; }
+.urg .ico { width: 16px; height: 16px; }
+.urg.u { background: var(--color-critical); color: var(--color-on-brand); }
+.urg.s { background: var(--color-brand); color: var(--color-on-brand); }
+.urg.p { background: var(--color-surface); color: var(--color-ink); }
+.act { font-size: 13px; line-height: 1.6; color: var(--color-body); display: grid; gap: 4px; }
+.act .own { display: inline-flex; align-items: center; gap: 8px; font-weight: 900; color: var(--color-ink); font-family: var(--font-vi); }
+.act .own img { width: 24px; height: 24px; border-radius: var(--radius); }
+.act .due { font-weight: 700; color: var(--color-ink); }
+.act .btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.send-note { font-size: 11px; color: var(--color-muted); line-height: 1.5; }
+.empty { border: 1px dashed var(--color-border); padding: var(--space-3); text-align: left; color: var(--color-muted); font-size: 14px; line-height: 1.6; }
 
 footer { margin-top: var(--space-5); border-top: var(--border); }
 footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; line-height: 1.8; color: var(--color-muted); display: grid; gap: 4px; }
 
-@media (max-width: 860px) {
+@media (max-width: 960px) {
   .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .agents { grid-template-columns: minmax(0, 1fr); }
   .boxes { grid-template-columns: minmax(0, 1fr); }
-  .risk { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .risk-tools { grid-template-columns: minmax(0, 1fr); }
+  .risk { grid-template-columns: 72px minmax(0, 1fr); }
+  .risk .act { grid-column: 1 / -1; }
 }
-@media (max-width: 480px) {
+@media (max-width: 520px) {
   .hero h1 { font-size: 30px; }
-  .kpi .v { font-size: 30px; }
-  section > .wrap > h2, .band h2 { font-size: 24px; }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .bar, .stat .v { transition: opacity .2s; }
+  .kpi .v { font-size: 44px; }
+  .sec-head h2 { font-size: 22px; }
+  .sec-icon { width: 44px; height: 44px; }
+  .tab { padding: 12px 14px; font-size: 14px; }
+  .tabpanel { padding: var(--space-2); }
+  .risk { grid-template-columns: minmax(0, 1fr); padding: var(--space-2); }
+  .sev-box { width: 56px; height: 56px; }
+  .box li { grid-template-columns: auto minmax(0, 1fr); }
+  .box li time { grid-column: 2; text-align: left; }
 }
 </style>
 
-<header class="hero on-brand">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 6 9-6"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="1"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H10l-6 4z"/><path d="M8 9.5h8M8 12.5h5"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></symbol>
+  <symbol id="i-tasks" viewBox="0 0 24 24"><path d="M10 6h10M10 12h10M10 18h10M3.5 6l1.5 1.5L8 4.5M3.5 12l1.5 1.5L8 10.5M3.5 18l1.5 1.5L8 16.5"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.01"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17 14c3 0 5 2 5 5"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h13l-3 4 3 4H5"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/><path d="M11 13l10-10"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></symbol>
+  <symbol id="i-at" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 12v1.5a2.5 2.5 0 0 0 5 0V12a9 9 0 1 0-4 7.5"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="1"/><path d="M16 10l5-3v10l-5-3z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 17v5M8 3h8l-1 6 3 4H6l3-4z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="13" height="13" rx="1"/><path d="M16 8V3H3v13h5"/></symbol>
+  <symbol id="i-hash" viewBox="0 0 24 24"><path d="M9 3L7 21M17 3l-2 18M4 8h17M3 16h17"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></symbol>
+</svg>
+
+<header class="hero">
   <div class="wrap">
     <div class="hero-top">
       <div class="brandmark">OEPM · OLYMPUS VIETNAM</div>
       <div class="hero-meta">
-        <span class="tag"><b>サンプルデータ</b> Sample data · Dữ liệu mẫu</span>
-        <span class="tag">基準日 <b class="num" id="asof">2026-11-13</b></span>
+        <span class="tag"><svg class="ico"><use href="#i-alert"/></svg><b>サンプルデータ</b> Sample data · Dữ liệu mẫu</span>
+        <span class="tag"><svg class="ico"><use href="#i-cal"/></svg>基準日 <b class="num">2026-11-13</b></span>
       </div>
     </div>
     <h1>オペレーショナル・エクセレンス PMO ダッシュボード
@@ -220,14 +308,16 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
 <main>
   <section aria-labelledby="s-overview">
     <div class="wrap">
-      <h2 id="s-overview">概要<span class="sub">Overview · Tổng quan</span></h2>
+      <div class="sec-head"><span class="sec-icon"><svg class="ico"><use href="#i-grid"/></svg></span>
+        <h2 id="s-overview">概要<span class="sub">Overview · Tổng quan</span></h2></div>
       <div class="kpis" id="kpis"></div>
     </div>
   </section>
 
   <section aria-labelledby="s-project">
     <div class="wrap">
-      <h2 id="s-project">プロジェクト工程<span class="sub">Single-use Endoscopic Camera line · Dây chuyền camera nội soi dùng một lần</span></h2>
+      <div class="sec-head"><span class="sec-icon"><svg class="ico"><use href="#i-flag"/></svg></span>
+        <h2 id="s-project">プロジェクト工程<span class="sub">Single-use Endoscopic Camera line · Dây chuyền camera nội soi dùng một lần</span></h2></div>
       <div class="tl"><div class="tl-inner" id="timeline"></div></div>
       <p class="tl-foot">斜線 = 日程未確定 (TBC)。FAT は据付開始前、詳細日程は未定。<br>Hatched = date TBC. FAT before installation start; exact dates not yet fixed. · Gạch chéo = chưa chốt ngày.</p>
     </div>
@@ -235,46 +325,67 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
 
   <section aria-labelledby="s-agents">
     <div class="wrap">
-      <h2 id="s-agents">エージェント別パフォーマンス<span class="sub">Agent performance · Hiệu suất theo trợ lý</span></h2>
+      <div class="sec-head"><span class="sec-icon"><svg class="ico"><use href="#i-users"/></svg></span>
+        <h2 id="s-agents">エージェント別パフォーマンス<span class="sub">Agent performance · Hiệu suất theo trợ lý</span></h2></div>
       <div class="agents" id="agents"></div>
     </div>
   </section>
 
   <section aria-labelledby="s-tasks">
     <div class="wrap">
-      <h2 id="s-tasks">タスク一覧<span class="sub">Task board · Danh sách công việc</span></h2>
-      <div class="filters" role="group" aria-label="担当で絞り込み / Filter by agent" id="filters"></div>
+      <div class="sec-head"><span class="sec-icon"><svg class="ico"><use href="#i-tasks"/></svg></span>
+        <h2 id="s-tasks">タスク一覧<span class="sub">Task board · Danh sách công việc</span></h2></div>
+      <div class="task-tools">
+        <div class="seg-label"><svg class="ico"><use href="#i-filter"/></svg>担当 · Owner · Phụ trách</div>
+        <div class="seg" role="group" aria-label="担当で絞り込み" id="filters"></div>
+      </div>
       <div class="table-wrap">
         <table class="tasks">
-          <thead>
-            <tr>
-              <th>タスク<span class="sub">Task · Công việc</span></th>
-              <th>担当<span class="sub">Owner · Phụ trách</span></th>
-              <th>期限<span class="sub">Due · Hạn</span></th>
-              <th>状態<span class="sub">Status · Trạng thái</span></th>
-              <th>優先度<span class="sub">Priority · Ưu tiên</span></th>
-            </tr>
-          </thead>
+          <thead><tr>
+            <th>タスク<span class="sub">Task · Công việc</span></th>
+            <th>担当<span class="sub">Owner · Phụ trách</span></th>
+            <th>期限<span class="sub">Due · Hạn</span></th>
+            <th>状態<span class="sub">Status · Trạng thái</span></th>
+            <th>優先度<span class="sub">Priority · Ưu tiên</span></th>
+          </tr></thead>
           <tbody id="taskrows"></tbody>
         </table>
       </div>
     </div>
   </section>
 
-  <div class="band" aria-labelledby="s-m365">
+  <div class="band">
     <div class="wrap">
-      <h2 id="s-m365">Microsoft 365 インフォメーション<span class="sub">Teams &amp; Outlook highlights · Thông tin nổi bật từ Teams &amp; Outlook</span></h2>
+      <div class="sec-head"><span class="sec-icon"><svg class="ico"><use href="#i-chat"/></svg></span>
+        <h2 id="s-m365">Microsoft 365 インフォメーション<span class="sub">Outlook &amp; Teams highlights · Thông tin nổi bật từ Outlook &amp; Teams</span></h2></div>
       <div class="notice">
         <b>未接続</b>
         <span>Microsoft 365 は未接続です。下記は表示確認用のサンプルです。<span class="sub">Not connected. Sample items for layout only. · Chưa kết nối. Dữ liệu mẫu để xem bố cục.</span></span>
       </div>
-      <div class="boxes" id="boxes"></div>
+      <div class="tabs" role="tablist" aria-label="Microsoft 365" id="tabs"></div>
+      <div id="panels"></div>
     </div>
   </div>
 
   <section aria-labelledby="s-risks">
     <div class="wrap">
-      <h2 id="s-risks">BOD 向け主要リスク<span class="sub">Key risks for the Board · Rủi ro chính cho HĐQT</span></h2>
+      <div class="sec-head"><span class="sec-icon" style="background:var(--color-critical)"><svg class="ico"><use href="#i-alert"/></svg></span>
+        <h2 id="s-risks">BOD 向け主要リスク<span class="sub">Key risks for the Board · Rủi ro chính cho HĐQT</span></h2></div>
+      <div class="risk-tools">
+        <div class="risk-filters">
+          <div><div class="seg-label"><svg class="ico"><use href="#i-flag"/></svg>優先度 · Priority · Ưu tiên</div><div class="seg" id="f-prio"></div></div>
+          <div><div class="seg-label"><svg class="ico"><use href="#i-clock"/></svg>緊急度 · Urgency · Khẩn cấp</div><div class="seg" id="f-urg"></div></div>
+          <p class="send-note">緊急 = 対応期限まで 7 日以内 · 近日 = 30 日以内 · 計画 = 30 日超<br>Urgent ≤ 7 days to action due · Soon ≤ 30 days · Planned &gt; 30 days</p>
+        </div>
+        <div>
+          <div class="seg-label"><svg class="ico"><use href="#i-grid"/></svg>リスクマトリクス · Click a cell to filter</div>
+          <div class="matrix" id="matrix"></div>
+        </div>
+      </div>
+      <div class="risk-bar">
+        <div class="risk-count" id="riskcount"></div>
+        <a class="btn ghost" id="report-all" href="#" target="_blank" rel="noopener"><svg class="ico"><use href="#i-mail"/></svg>表示中のリスクを一括報告 · Report all shown</a>
+      </div>
       <div class="risks" id="risks"></div>
     </div>
   </section>
@@ -282,8 +393,9 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
 
 <footer>
   <div class="wrap">
-    <span>数値・タスク・メッセージはすべてサンプルです。Microsoft 365 接続後に実データへ置き換えます。</span>
-    <span>All figures, tasks and messages are samples. They will be replaced with live data once Microsoft 365 is connected. · Tất cả số liệu là dữ liệu mẫu.</span>
+    <span>数値・タスク・メッセージ・リスクはすべてサンプルです。Microsoft 365 接続後に実データへ置き換えます。</span>
+    <span>All figures, tasks, messages and risks are samples. They will be replaced with live data once Microsoft 365 is connected. · Tất cả số liệu là dữ liệu mẫu.</span>
+    <span>「Outlook で報告」はメールの下書きを開くだけです。送信はご自身で確認してから行ってください。 · Report buttons open a draft only. You review and send.</span>
   </div>
 </footer>
 
@@ -292,16 +404,15 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
   var AV = { Hiruma: "data:image/jpeg;base64,{{HIRUMA}}", Chopper: "data:image/jpeg;base64,{{CHOPPER}}", Jarvis: "data:image/jpeg;base64,{{JARVIS}}" };
   var ASOF = new Date("2026-11-13T00:00:00");
   var INSTALL = new Date("2027-03-01T00:00:00");
+  function ic(id, cls) { return '<svg class="ico' + (cls ? ' ' + cls : '') + '"><use href="#i-' + id + '"/></svg>'; }
+  function sum(a) { return a.reduce(function (x, y) { return x + y; }, 0); }
+  function daysTo(d) { return Math.round((new Date(d + "T00:00:00") - ASOF) / 86400000); }
 
   var AGENTS = [
-    { name: "Hiruma", role: "プロジェクトアシスタント・チームリーダー", sub: "Lead Project Assistant · Trợ lý dự án trưởng nhóm",
-      weekly: [2,3,2,3,2,2,2,2], open: 5, ontime: 94 },
-    { name: "Chopper", role: "医療機器・規制エキスパート", sub: "Medical device &amp; regulatory expert · Chuyên gia thiết bị y tế",
-      weekly: [1,2,1,2,2,1,2,1], open: 4, ontime: 92 },
-    { name: "Jarvis", role: "パーソナルアシスタント", sub: "Personal Assistant · Trợ lý cá nhân",
-      weekly: [4,5,3,5,4,6,5,4], open: 6, ontime: 97 }
+    { name: "Hiruma", role: "プロジェクトアシスタント・チームリーダー", sub: "Lead Project Assistant · Trợ lý dự án trưởng nhóm", weekly: [2,3,2,3,2,2,2,2], open: 5, ontime: 94 },
+    { name: "Chopper", role: "医療機器・規制エキスパート", sub: "Medical device &amp; regulatory expert · Chuyên gia thiết bị y tế", weekly: [1,2,1,2,2,1,2,1], open: 4, ontime: 92 },
+    { name: "Jarvis", role: "パーソナルアシスタント", sub: "Personal Assistant · Trợ lý cá nhân", weekly: [4,5,3,5,4,6,5,4], open: 6, ontime: 97 }
   ];
-
   var ST = {
     prog: ["進行中", "In progress · Đang thực hiện"],
     todo: ["未着手", "Not started · Chưa bắt đầu"],
@@ -309,7 +420,8 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
     wait: ["承認待ち", "Awaiting your OK · Chờ phê duyệt"],
     done: ["完了", "Done · Hoàn thành"]
   };
-  var PR = { h: ["高", "High · Cao"], m: ["中", "Medium · Trung bình"], l: ["低", "Low · Thấp"] };
+  var PR = { h: ["高", "High", "Cao"], m: ["中", "Medium", "Trung bình"], l: ["低", "Low", "Thấp"] };
+  var UR = { u: ["緊急", "Urgent", "Khẩn cấp"], s: ["近日", "Soon", "Sắp tới"], p: ["計画", "Planned", "Kế hoạch"] };
 
   var TASKS = [
     { a: "Hiruma", ja: "設備ベンダー RFQ 比較表", en: "Equipment vendor RFQ comparison · So sánh báo giá nhà cung cấp thiết bị", due: "2026-11-12", s: "late", p: "h" },
@@ -326,57 +438,93 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
     { a: "Chopper", ja: "PFMEA 初版レビュー", en: "PFMEA first draft review · Rà soát PFMEA bản đầu", due: "2026-11-10", s: "done", p: "h" }
   ];
 
-  var BOXES = [
-    { ja: "要対応メール", sub: "Emails needing action · Email cần xử lý", src: "OUTLOOK", items: [
-      ["ベンダーA：FAT 日程の確認依頼", "Vendor A: please confirm FAT dates · Nhà cung cấp A: xác nhận lịch FAT", "今日 09:12"],
-      ["品質保証部：URS 改訂版のレビュー依頼", "QA: review revised URS · QA: rà soát URS bản sửa đổi", "昨日 17:40"],
-      ["調達部：PO 承認 期限 11/15", "Procurement: PO approval due 15 Nov · Mua hàng: duyệt PO trước 15/11", "11/12"]
+  var M365 = {
+    outlook: { label: "Outlook", icon: "mail", boxes: [
+      { ja: "要対応メール", sub: "Emails needing action · Email cần xử lý", icon: "mail", items: [
+        { i: "alert", hot: 1, from: "ベンダーA / Vendor A", t: "FAT 日程の確認依頼", s: "Please confirm FAT dates · Xác nhận lịch FAT", at: "今日 09:12" },
+        { i: "mail", from: "品質保証部 / QA", t: "URS 改訂版のレビュー依頼", s: "Review revised URS · Rà soát URS bản sửa đổi", at: "昨日 17:40" },
+        { i: "alert", hot: 1, from: "調達部 / Procurement", t: "PO 承認 期限 11/15", s: "PO approval due 15 Nov · Duyệt PO trước 15/11", at: "11/12" },
+        { i: "mail", from: "本社 OpEx / HQ OpEx", t: "月次 KPI テンプレート更新のお知らせ", s: "Monthly KPI template updated · Cập nhật mẫu KPI tháng", at: "11/12" },
+        { i: "mail", from: "総務部 / GA", t: "12月 出張申請の締切", s: "December travel request deadline · Hạn đăng ký công tác tháng 12", at: "11/11" }
+      ]},
+      { ja: "予定表", sub: "Calendar, next 5 days · Lịch 5 ngày tới", icon: "cal", items: [
+        { i: "video", blue: 1, from: "Teams 会議 / Online", t: "週次プロジェクト定例", s: "Weekly project sync · Họp dự án hàng tuần", at: "11/13 14:00" },
+        { i: "cal", from: "会議室 A / Room A", t: "ベンダーA FAT 準備会議", s: "Vendor A FAT preparation · Chuẩn bị FAT", at: "11/14 10:00" },
+        { i: "video", blue: 1, from: "Teams 会議 / Online", t: "本社 OpEx レビュー", s: "HQ OpEx review · Đánh giá OpEx với trụ sở", at: "11/18 16:00" },
+        { i: "cal", from: "現地 / On site", t: "クリーンルーム工事 現場確認", s: "Cleanroom works site check · Kiểm tra hiện trường phòng sạch", at: "11/19 09:00" }
+      ]}
     ]},
-    { ja: "今後の会議", sub: "Upcoming meetings · Cuộc họp sắp tới", src: "OUTLOOK · TEAMS", items: [
-      ["週次プロジェクト定例", "Weekly project sync · Họp dự án hàng tuần", "11/13 14:00"],
-      ["ベンダーA FAT 準備会議", "Vendor A FAT preparation · Chuẩn bị FAT với nhà cung cấp A", "11/14 10:00"],
-      ["本社 OpEx レビュー", "HQ OpEx review · Đánh giá OpEx với trụ sở", "11/18 16:00"]
-    ]},
-    { ja: "Teams メンション", sub: "Teams mentions · Nhắc đến trên Teams", src: "TEAMS", items: [
-      ["#Line-Setup：レイアウト図 Rev.C を共有", "Layout drawing Rev.C shared · Đã chia sẻ bản vẽ bố trí Rev.C", "今日 08:30"],
-      ["#QA-Validation：バリデーション計画ドラフトの確認依頼", "Please check validation plan draft · Vui lòng xem bản nháp kế hoạch thẩm định", "昨日"],
-      ["#Procurement：第1便 出荷日確定", "Lot 1 ship date confirmed · Đã chốt ngày giao lô 1", "11/11"]
-    ]},
-    { ja: "最近の共有ファイル", sub: "Recently shared files · Tệp chia sẻ gần đây", src: "TEAMS · ONEDRIVE", items: [
-      ["URS_SingleUseCamera_Rev3.xlsx", "User requirement spec · Đặc tả yêu cầu người dùng", "今日"],
-      ["Line_Layout_RevC.pdf", "Line layout · Bố trí dây chuyền", "今日"],
-      ["VMP_Draft_v0.3.docx", "Validation master plan · Kế hoạch thẩm định tổng thể", "11/10"]
+    teams: { label: "Teams", icon: "chat", boxes: [
+      { ja: "メンション", sub: "Mentions · Được nhắc đến", icon: "at", items: [
+        { i: "at", hot: 1, from: "#QA-Validation", t: "バリデーション計画ドラフトの確認依頼", s: "Please check validation plan draft · Vui lòng xem bản nháp kế hoạch thẩm định", at: "昨日" },
+        { i: "at", from: "#Line-Setup", t: "レイアウト図 Rev.C へのコメント依頼", s: "Comments on layout Rev.C · Góp ý bản vẽ bố trí Rev.C", at: "今日 08:30" },
+        { i: "at", from: "チャット / Chat", t: "据付業者の入構手続きについて", s: "Site access for installer · Thủ tục vào nhà máy cho nhà thầu", at: "11/12" }
+      ]},
+      { ja: "チャネル更新", sub: "Channel updates · Cập nhật kênh", icon: "hash", items: [
+        { i: "pin", blue: 1, from: "#Procurement", t: "第1便 出荷日確定", s: "Lot 1 ship date confirmed · Đã chốt ngày giao lô 1", at: "11/11" },
+        { i: "hash", from: "#Line-Setup", t: "電源容量の再計算結果を共有", s: "Power load recalculation shared · Đã chia sẻ tính lại công suất điện", at: "11/11" },
+        { i: "hash", from: "#OEPM", t: "11月 BOD 資料の構成案", s: "Draft outline, November BOD pack · Dàn ý tài liệu HĐQT tháng 11", at: "11/10" }
+      ]},
+      { ja: "最近の共有ファイル", sub: "Recently shared files · Tệp chia sẻ gần đây", icon: "file", full: 1, items: [
+        { i: "file", from: "#QA-Validation", t: "URS_SingleUseCamera_Rev3.xlsx", s: "User requirement spec · Đặc tả yêu cầu người dùng", at: "今日" },
+        { i: "file", from: "#Line-Setup", t: "Line_Layout_RevC.pdf", s: "Line layout · Bố trí dây chuyền", at: "今日" },
+        { i: "file", from: "#QA-Validation", t: "VMP_Draft_v0.3.docx", s: "Validation master plan · Kế hoạch thẩm định tổng thể", at: "11/10" }
+      ]}
     ]}
-  ];
+  };
 
   var RISKS = [
-    { lv: "hi", sev: ["高", "High · Cao"], ja: "FAT 日程が未確定。2027年3月の据付開始に直結。", en: "FAT date not fixed. Directly threatens the Mar-2027 installation start. · Chưa chốt ngày FAT, ảnh hưởng trực tiếp đến lắp đặt tháng 3/2027.",
-      own: "Hiruma", act: "11/20 までにベンダーAと日程確定", actEn: "Fix date with Vendor A by 20 Nov · Chốt lịch với nhà cung cấp A trước 20/11" },
-    { lv: "hi", sev: ["高", "High · Cao"], ja: "滅菌方式が未決定。バリデーション計画とクリーンルーム仕様が決められない。", en: "Sterilization method undecided. Blocks validation plan and cleanroom spec. · Chưa chọn phương pháp tiệt trùng, chặn kế hoạch thẩm định.",
-      own: "Chopper", act: "EO / 放射線の比較を 12/5 に提出、方針決定を依頼", actEn: "Submit EO vs radiation comparison on 5 Dec for decision · Nộp so sánh 5/12 để quyết định" },
-    { lv: "md", sev: ["中", "Medium · TB"], ja: "設備輸入の通関リードタイムが不透明。", en: "Customs lead time for imported equipment is uncertain. · Thời gian thông quan thiết bị nhập khẩu chưa rõ.",
-      own: "Jarvis", act: "通関業者と書類事前確認、余裕日数を工程に反映", actEn: "Pre-check documents with broker, add buffer to schedule · Kiểm tra trước hồ sơ, thêm dự phòng vào tiến độ" }
+    { id: "R-01", p: "h", due: "2026-11-20", own: "Hiruma",
+      ja: "FAT 日程が未確定", en: "FAT date not fixed", vi: "Chưa chốt ngày FAT",
+      impJa: "2027年3月の据付開始が遅れる可能性", impEn: "Mar-2027 installation start at risk",
+      actJa: "ベンダーAと日程確定", actEn: "Fix date with Vendor A" },
+    { id: "R-02", p: "m", due: "2026-11-18", own: "Hiruma",
+      ja: "クリーンルーム空調工事の業者キャパシティ不足", en: "Cleanroom HVAC contractor capacity short", vi: "Nhà thầu HVAC phòng sạch thiếu năng lực",
+      impJa: "クリーンルーム完成が2〜4週遅延する恐れ", impEn: "Cleanroom completion may slip 2 to 4 weeks",
+      actJa: "代替業者の見積取得", actEn: "Get quote from a second contractor" },
+    { id: "R-03", p: "h", due: "2026-12-05", own: "Chopper",
+      ja: "滅菌方式（EO / 放射線）が未決定", en: "Sterilization method (EO / radiation) undecided", vi: "Chưa chọn phương pháp tiệt trùng (EO / bức xạ)",
+      impJa: "バリデーション計画とクリーンルーム仕様が確定できない", impEn: "Validation plan and cleanroom spec cannot be fixed",
+      actJa: "比較資料を提出し方針決定を依頼", actEn: "Submit comparison and request a decision" },
+    { id: "R-04", p: "m", due: "2026-11-22", own: "Jarvis",
+      ja: "設備輸入の通関リードタイムが不透明", en: "Customs lead time for imported equipment unclear", vi: "Thời gian thông quan thiết bị chưa rõ",
+      impJa: "据付開始に向けた設備搬入の遅れ", impEn: "Late equipment delivery before installation",
+      actJa: "通関業者と書類を事前確認、工程に余裕日数", actEn: "Pre-check documents with broker, add schedule buffer" },
+    { id: "R-05", p: "h", due: "2027-01-15", own: "Hiruma",
+      ja: "バリデーション技術者 2 名が未採用", en: "Two validation engineers not yet hired", vi: "Chưa tuyển được 2 kỹ sư thẩm định",
+      impJa: "IQ / OQ / PQ の実行体制が不足", impEn: "Not enough people to run IQ / OQ / PQ",
+      actJa: "本社からの短期派遣を打診", actEn: "Request short-term secondment from HQ" },
+    { id: "R-06", p: "m", due: "2027-01-31", own: "Chopper",
+      ja: "イメージセンサーが単一調達先", en: "Image sensor is single-sourced", vi: "Cảm biến hình ảnh chỉ có một nhà cung cấp",
+      impJa: "供給停止時に量産立上げが止まる", impEn: "Ramp-up stops if supply is interrupted",
+      actJa: "第二調達先の評価を開始", actEn: "Start qualifying a second source" },
+    { id: "R-07", p: "l", due: "2027-02-28", own: "Jarvis",
+      ja: "為替変動（JPY / USD / VND）による設備費の増加", en: "FX movement (JPY / USD / VND) raises CAPEX", vi: "Biến động tỷ giá làm tăng chi phí đầu tư",
+      impJa: "設備予算の超過リスク", impEn: "Equipment budget overrun",
+      actJa: "経理部と為替予約を検討", actEn: "Review FX hedging with Finance" }
   ];
+  RISKS.forEach(function (r) {
+    r.days = daysTo(r.due);
+    r.u = r.days <= 7 ? "u" : (r.days <= 30 ? "s" : "p");
+    r.score = ({ h: 3, m: 2, l: 1 })[r.p] + ({ u: 3, s: 2, p: 1 })[r.u];
+  });
 
-  function esc(s) { return String(s); }
-  function sum(a) { return a.reduce(function (x, y) { return x + y; }, 0); }
-  function chip(s) { return '<span class="chip ' + s + '" title="' + ST[s][1] + '">' + ST[s][0] + '</span>'; }
-
-  /* KPIs, derived from the agent data so the numbers agree */
+  /* KPIs */
   var openAll = sum(AGENTS.map(function (a) { return a.open; }));
   var doneWk = sum(AGENTS.map(function (a) { return a.weekly[a.weekly.length - 1]; }));
   var done8 = AGENTS.map(function (a) { return sum(a.weekly); });
   var ontimeAll = Math.round(sum(AGENTS.map(function (a, i) { return a.ontime * done8[i]; })) / sum(done8));
   var days = Math.round((INSTALL - ASOF) / 86400000);
   var lateCount = TASKS.filter(function (t) { return t.s === "late"; }).length;
+  var hiRisk = RISKS.filter(function (r) { return r.p === "h"; }).length;
   var KP = [
-    { lead: true, v: days, u: "日", k: "据付開始まで", s: "Days to installation start · Ngày đến lắp đặt", n: "基準 2027-03-01（月のみ確定）" },
-    { v: openAll, u: "件", k: "未完了タスク", s: "Open tasks · Việc đang mở", n: "うち遅延 " + lateCount + " 件 / " + lateCount + " overdue" },
-    { v: doneWk, u: "件", k: "今週の完了", s: "Done this week · Hoàn thành tuần này", n: "3 エージェント合計" },
-    { v: ontimeAll, u: "%", k: "期限内完了率", s: "On-time rate · Tỷ lệ đúng hạn", n: "直近 8 週間・加重平均" }
+    { lead: 1, i: "flag", v: days, u: "日", k: "据付開始まで", s: "Days to installation · Ngày đến lắp đặt", n: "基準 2027-03-01（月のみ確定）" },
+    { i: "tasks", v: openAll, u: "件", k: "未完了タスク", s: "Open tasks · Việc đang mở", n: "うち遅延 <b>" + lateCount + " 件</b> · " + lateCount + " overdue" },
+    { i: "check", v: ontimeAll, u: "%", k: "期限内完了率", s: "On-time rate · Tỷ lệ đúng hạn", n: "直近 8 週間・加重平均 · 8-week weighted" },
+    { i: "alert", v: hiRisk, u: "件", k: "高優先度リスク", s: "High-priority risks · Rủi ro ưu tiên cao", n: "BOD 報告対象 · For Board reporting" }
   ];
   document.getElementById("kpis").innerHTML = KP.map(function (k) {
-    return '<div class="kpi' + (k.lead ? ' lead' : '') + '"><div class="k">' + k.k + '<span class="sub">' + k.s + '</span></div>' +
+    return '<div class="kpi' + (k.lead ? ' lead' : '') + '"><div class="kpi-top"><div class="k">' + k.k + '<span class="sub">' + k.s + '</span></div><span class="kpi-icon">' + ic(k.i) + '</span></div>' +
       '<div class="v num">' + k.v + '<small>' + k.u + '</small></div><div class="note">' + k.n + '</div></div>';
   }).join("");
 
@@ -388,54 +536,53 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
   var grid = years.map(function (y) { return '<span class="grid-line" style="left:' + pct(y) + '"></span>'; }).join("");
   var todayMark = '<span class="today" style="left:' + pct(ASOF) + '"></span>';
   var ROWS = [
-    { ja: "FAT（ベンダー工場）", s: "Factory acceptance test · FAT", html: '<span class="bar tbc" style="left:' + pct("2027-01-01") + ';width:' + width("2027-01-01", "2027-03-01") + '"></span><span class="bar-label" style="left:calc(' + pct("2027-03-01") + ' + 8px)">据付前 · TBC</span>' },
-    { ja: "据付開始", s: "Installation start · Bắt đầu lắp đặt", html: '<span class="diamond" style="left:' + pct("2027-03-15") + '"></span><span class="bar-label" style="left:calc(' + pct("2027-03-15") + ' + 14px)">2027-03</span>' },
-    { ja: "SAT（現地）", s: "Site acceptance test · SAT", html: '<span class="bar" style="left:' + pct("2027-07-01") + ';width:' + width("2027-07-01", "2027-10-01") + '"></span><span class="bar-label" style="left:calc(' + pct("2027-10-01") + ' + 8px)">Q3-2027</span>' },
+    { ja: "FAT（ベンダー工場）", s: "Factory acceptance test", html: '<span class="bar tbc" style="left:' + pct("2027-01-01") + ';width:' + width("2027-01-01", "2027-03-01") + '"></span><span class="bar-label" style="left:calc(' + pct("2027-03-01") + ' + 8px)">据付前 · TBC</span>' },
+    { ja: "据付開始", s: "Installation start · Bắt đầu lắp đặt", html: '<span class="diamond" style="left:' + pct("2027-03-15") + '"></span><span class="bar-label" style="left:calc(' + pct("2027-03-15") + ' + 16px)">2027-03</span>' },
+    { ja: "SAT（現地）", s: "Site acceptance test", html: '<span class="bar" style="left:' + pct("2027-07-01") + ';width:' + width("2027-07-01", "2027-10-01") + '"></span><span class="bar-label" style="left:calc(' + pct("2027-10-01") + ' + 8px)">Q3-2027</span>' },
     { ja: "バリデーション", s: "Validation · Thẩm định", html: '<span class="bar tbc" style="left:' + pct("2027-01-01") + ';width:' + width("2027-01-01", "2030-01-01") + '"></span><span class="bar-label" style="left:calc(' + pct("2030-01-01") + ' + 8px)">2027–2029</span>' },
-    { ja: "海外向け製品リリース", s: "International release · Phát hành quốc tế", html: '<span class="diamond" style="left:' + pct("2030-01-15") + '"></span><span class="bar-label" style="left:calc(' + pct("2030-01-15") + ' - 110px)">検証完了後</span>' }
+    { ja: "海外向け製品リリース", s: "International release · Phát hành quốc tế", html: '<span class="diamond" style="left:' + pct("2030-01-15") + '"></span><span class="bar-label" style="left:calc(' + pct("2030-01-15") + ' - 104px)">検証完了後</span>' }
   ];
   var axis = '<div class="tl-row tl-axis"><div></div><div class="tl-track">' +
     years.map(function (y) { return '<span class="tick" style="left:' + pct(y) + '">' + y.slice(0, 4) + '</span>'; }).join("") +
-    '<span class="today-cap" style="left:' + pct(ASOF) + '">今日</span></div></div>';
+    '<span class="today-cap" style="left:' + pct(ASOF) + '">今日 Today</span></div></div>';
   document.getElementById("timeline").innerHTML = axis + ROWS.map(function (r) {
     return '<div class="tl-row"><div class="tl-name">' + r.ja + '<span class="sub">' + r.s + '</span></div><div class="tl-track">' + grid + todayMark + r.html + '</div></div>';
   }).join("");
 
-  /* Agent cards */
+  /* Agents */
+  function chip(s) { return '<span class="chip ' + s + '">' + ST[s][0] + '</span>'; }
   function spark(data) {
-    var W = 240, H = 48, max = Math.max.apply(null, data.concat([6])), n = data.length;
-    var pts = data.map(function (v, i) { return [i * (W / (n - 1)), H - 4 - (v / max) * (H - 10)]; });
+    var W = 240, H = 52, max = Math.max.apply(null, data.concat([6])), n = data.length;
+    var pts = data.map(function (v, i) { return [i * (W / (n - 1)), H - 4 - (v / max) * (H - 12)]; });
     var line = pts.map(function (p) { return p[0].toFixed(1) + "," + p[1].toFixed(1); }).join(" ");
-    var area = "0," + H + " " + line + " " + W + "," + H;
     var last = pts[n - 1];
     var gl = [0.25, 0.5, 0.75].map(function (f) { return '<line x1="0" x2="' + W + '" y1="' + (H * f) + '" y2="' + (H * f) + '" stroke="#E6E6E6" stroke-width="1"/>'; }).join("");
     return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" role="img" aria-label="週次完了数 ' + data.join(", ") + '">' + gl +
-      '<polygon points="' + area + '" fill="#001C71" fill-opacity="0.08"/>' +
-      '<polyline points="' + line + '" fill="none" stroke="#001C71" stroke-width="2" vector-effect="non-scaling-stroke"/>' +
-      '<circle cx="' + last[0] + '" cy="' + last[1] + '" r="3.5" fill="#001C71"/></svg>';
+      '<polygon points="0,' + H + ' ' + line + ' ' + W + ',' + H + '" fill="#001C71" fill-opacity="0.12"/>' +
+      '<polyline points="' + line + '" fill="none" stroke="#001C71" stroke-width="2.5" vector-effect="non-scaling-stroke"/>' +
+      '<circle cx="' + last[0] + '" cy="' + last[1] + '" r="4" fill="#001C71"/></svg>';
   }
   document.getElementById("agents").innerHTML = AGENTS.map(function (a, i) {
     var mine = TASKS.filter(function (t) { return t.a === a.name && t.s !== "done"; }).slice(0, 3);
     return '<article class="agent">' +
-      '<div class="agent-head"><img src="' + AV[a.name] + '" alt="' + a.name + '" width="64" height="64"><div><div class="agent-name">' + a.name + '</div><div class="agent-role">' + a.role + '<span class="sub">' + a.sub + '</span></div></div></div>' +
+      '<div class="agent-head"><img src="' + AV[a.name] + '" alt="' + a.name + '" width="76" height="76"><div><div class="agent-name">' + a.name + '</div><div class="agent-role">' + a.role + '<span class="sub">' + a.sub + '</span></div></div></div>' +
       '<div class="stats">' +
         '<div class="stat"><span class="v num">' + done8[i] + '</span><span class="k">完了 · Done</span></div>' +
         '<div class="stat"><span class="v num">' + a.open + '</span><span class="k">未完了 · Open</span></div>' +
-        '<div class="stat"><span class="v num">' + a.ontime + '%</span><span class="k">期限内 · On-time</span></div>' +
+        '<div class="stat"><span class="v num good">' + a.ontime + '%</span><span class="k">期限内 · On-time</span></div>' +
       '</div>' +
-      '<div class="spark"><div class="spark-cap"><span>週次完了数（8週）</span><span>Weekly done</span></div>' + spark(a.weekly) + '</div>' +
-      '<ul class="focus">' + mine.map(function (t) {
-        return '<li><span>' + t.ja + '<span class="sub">' + t.en.split(" · ")[0] + '</span></span>' + chip(t.s) + '</li>';
-      }).join("") + '</ul></article>';
+      '<div class="spark"><div class="spark-cap"><span>週次完了数（8週）· Weekly done</span><b class="num">' + a.weekly[a.weekly.length - 1] + ' 件</b></div>' + spark(a.weekly) + '</div>' +
+      '<ul class="focus">' + mine.map(function (t) { return '<li><span>' + t.ja + '<span class="sub">' + t.en.split(" · ")[0] + '</span></span>' + chip(t.s) + '</li>'; }).join("") + '</ul></article>';
   }).join("");
 
-  /* Task table with agent filter */
+  /* Task table */
   var current = "all";
-  var FILTERS = [["all", "すべて · All · Tất cả"]].concat(AGENTS.map(function (a) { return [a.name, a.name]; }));
+  var FILTERS = [["all", "すべて · All"]].concat(AGENTS.map(function (a) { return [a.name, a.name]; }));
   var fEl = document.getElementById("filters");
   function renderFilters() {
     fEl.innerHTML = FILTERS.map(function (f) {
-      return '<button type="button" id="f-' + f[0] + '" data-f="' + f[0] + '" aria-pressed="' + (f[0] === current) + '">' + f[1] + '</button>';
+      var img = f[0] === "all" ? ic("users") : '<img src="' + AV[f[0]] + '" alt="" width="20" height="20" style="border-radius:2px">';
+      return '<button type="button" id="f-' + f[0] + '" data-f="' + f[0] + '" aria-pressed="' + (f[0] === current) + '">' + img + f[1] + '</button>';
     }).join("");
   }
   function renderTasks() {
@@ -443,11 +590,11 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
       .sort(function (x, y) { return (x.s === "done") - (y.s === "done") || x.due.localeCompare(y.due); });
     document.getElementById("taskrows").innerHTML = rows.map(function (t) {
       return '<tr class="' + (t.s === "late" ? "is-late" : "") + '">' +
-        '<td>' + t.ja + '<span class="sub">' + t.en + '</span></td>' +
+        '<td><span class="t">' + t.ja + '</span><span class="sub">' + t.en + '</span></td>' +
         '<td><span class="who"><img src="' + AV[t.a] + '" alt="">' + t.a + '</span></td>' +
         '<td class="num">' + t.due + '</td>' +
         '<td>' + chip(t.s) + '<span class="sub">' + ST[t.s][1] + '</span></td>' +
-        '<td><span class="prio ' + t.p + '">' + PR[t.p][0] + '</span><span class="sub">' + PR[t.p][1] + '</span></td></tr>';
+        '<td><span class="prio ' + t.p + '">' + PR[t.p][0] + '</span><span class="sub">' + PR[t.p][1] + ' · ' + PR[t.p][2] + '</span></td></tr>';
     }).join("");
   }
   fEl.addEventListener("click", function (e) {
@@ -460,18 +607,130 @@ footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; li
   try { var saved = localStorage.getItem("oepm-filter"); if (saved && FILTERS.some(function (f) { return f[0] === saved; })) current = saved; } catch (err) {}
   renderFilters(); renderTasks();
 
-  /* M365 boxes */
-  document.getElementById("boxes").innerHTML = BOXES.map(function (b) {
-    return '<div class="box"><div class="box-head"><h3>' + b.ja + '<span class="sub">' + b.sub + '</span></h3><span class="src">' + b.src + '</span></div><ul>' +
-      b.items.map(function (it) { return '<li><span class="t">' + it[0] + '<span class="sub">' + it[1] + '</span></span><time>' + it[2] + '</time></li>'; }).join("") +
-      '</ul></div>';
-  }).join("");
+  /* Microsoft 365 tabs */
+  var TABS = ["outlook", "teams"];
+  var activeTab = "outlook";
+  try { var st = localStorage.getItem("oepm-tab"); if (TABS.indexOf(st) >= 0) activeTab = st; } catch (err) {}
+  function countHot(k) { return sum(M365[k].boxes.map(function (b) { return b.items.filter(function (x) { return x.hot; }).length; })); }
+  function renderTabs() {
+    document.getElementById("tabs").innerHTML = TABS.map(function (k) {
+      var c = countHot(k);
+      return '<button class="tab" role="tab" id="tab-' + k + '" aria-controls="panel-' + k + '" aria-selected="' + (k === activeTab) + '" tabindex="' + (k === activeTab ? 0 : -1) + '">' +
+        ic(M365[k].icon) + M365[k].label + (c ? '<span class="cnt" title="要対応 / Needs action">' + c + '</span>' : '') + '</button>';
+    }).join("");
+    document.getElementById("panels").innerHTML = TABS.map(function (k) {
+      return '<div class="tabpanel" role="tabpanel" id="panel-' + k + '" aria-labelledby="tab-' + k + '"' + (k === activeTab ? '' : ' hidden') + '><div class="boxes">' +
+        M365[k].boxes.map(function (b) {
+          return '<div class="box' + (b.full ? ' full' : '') + '"><div class="box-head"><span class="box-icon">' + ic(b.icon) + '</span><h3>' + b.ja + '<span class="sub">' + b.sub + '</span></h3><span class="count">' + b.items.length + '</span></div><ul>' +
+            b.items.map(function (it) {
+              return '<li><span class="li-ico' + (it.hot ? ' hot' : (it.blue ? ' blue' : '')) + '">' + ic(it.i) + '</span>' +
+                '<span><span class="from">' + it.from + '</span><span class="t" style="display:block">' + it.t + '</span><span class="sub">' + it.s + '</span></span>' +
+                '<time>' + it.at + '</time></li>';
+            }).join("") + '</ul></div>';
+        }).join("") + '</div></div>';
+    }).join("");
+  }
+  function selectTab(k, focus) {
+    activeTab = k;
+    try { localStorage.setItem("oepm-tab", k); } catch (err) {}
+    renderTabs();
+    if (focus) document.getElementById("tab-" + k).focus();
+  }
+  document.getElementById("tabs").addEventListener("click", function (e) {
+    var b = e.target.closest(".tab"); if (!b) return; selectTab(b.id.slice(4), true);
+  });
+  document.getElementById("tabs").addEventListener("keydown", function (e) {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    var i = TABS.indexOf(activeTab) + (e.key === "ArrowRight" ? 1 : -1);
+    selectTab(TABS[(i + TABS.length) % TABS.length], true); e.preventDefault();
+  });
+  renderTabs();
 
-  /* Risks */
-  document.getElementById("risks").innerHTML = RISKS.map(function (r) {
-    return '<div class="risk ' + r.lv + '"><div class="sev">' + r.sev[0] + '<span class="sub">' + r.sev[1] + '</span></div>' +
-      '<div><div class="what">' + r.ja + '</div><span class="sub">' + r.en + '</span></div>' +
-      '<div class="act"><span class="label">対応 · ' + r.own + '</span>' + r.act + '<span class="sub">' + r.actEn + '</span></div></div>';
-  }).join("");
+  /* Risks: filters, matrix, Outlook drafts */
+  var fp = "all", fu = "all";
+  var OWA = "https://outlook.office.com/mail/deeplink/compose";
+  function riskText(r) {
+    return "【" + r.id + "】" + r.ja + "\n" +
+      "  " + r.en + " / " + r.vi + "\n" +
+      "  優先度 Priority: " + PR[r.p][0] + " " + PR[r.p][1] + "  |  緊急度 Urgency: " + UR[r.u][0] + " " + UR[r.u][1] + "\n" +
+      "  影響 Impact: " + r.impJa + " / " + r.impEn + "\n" +
+      "  対応 Action: " + r.actJa + " / " + r.actEn + "\n" +
+      "  担当 Owner: " + r.own + "  |  期限 Due: " + r.due + "（残り " + r.days + " 日）";
+  }
+  function mailParts(list) {
+    var subject = list.length === 1
+      ? "[OEPM リスク報告 / Risk report] " + list[0].id + " " + list[0].ja + "（" + PR[list[0].p][0] + "・" + UR[list[0].u][0] + "）"
+      : "[OEPM リスク報告 / Risk report] 主要リスク " + list.length + " 件 / " + list.length + " key risks";
+    var body = "各位 / Dear Board members,\n\n" +
+      "単回使用内視鏡カメラ新ライン（オリンパスベトナム）のリスクを報告します。\n" +
+      "Risk report for the Single-use Endoscopic Camera line, Olympus Vietnam.\n\n" +
+      list.map(riskText).join("\n\n") +
+      "\n\n基準日 As of: 2026-11-13\nOEPM ダッシュボードより / From the OEPM Dashboard\n";
+    return { subject: subject, body: body };
+  }
+  function owaHref(list) { var m = mailParts(list); return OWA + "?subject=" + encodeURIComponent(m.subject) + "&body=" + encodeURIComponent(m.body); }
+  function mailtoHref(list) { var m = mailParts(list); return "mailto:?subject=" + encodeURIComponent(m.subject) + "&body=" + encodeURIComponent(m.body); }
+  function shown() {
+    return RISKS.filter(function (r) { return (fp === "all" || r.p === fp) && (fu === "all" || r.u === fu); })
+      .sort(function (a, b) { return b.score - a.score || a.days - b.days; });
+  }
+  function renderRiskFilters() {
+    document.getElementById("f-prio").innerHTML = [["all", "すべて · All"]].concat(["h", "m", "l"].map(function (k) { return [k, PR[k][0] + " · " + PR[k][1]]; })).map(function (o) {
+      return '<button type="button" id="fp-' + o[0] + '" data-v="' + o[0] + '" aria-pressed="' + (fp === o[0]) + '">' + o[1] + '</button>';
+    }).join("");
+    document.getElementById("f-urg").innerHTML = [["all", "すべて · All"]].concat(["u", "s", "p"].map(function (k) { return [k, UR[k][0] + " · " + UR[k][1]]; })).map(function (o) {
+      return '<button type="button" id="fu-' + o[0] + '" data-v="' + o[0] + '" aria-pressed="' + (fu === o[0]) + '">' + o[1] + '</button>';
+    }).join("");
+    var html = '<div class="mx-corner">優先度 ↓<br>緊急度 →</div>' + ["u", "s", "p"].map(function (u) {
+      return '<div class="mx-h">' + UR[u][0] + '<span class="sub">' + UR[u][1] + '</span></div>';
+    }).join("");
+    ["h", "m", "l"].forEach(function (p) {
+      html += '<div class="mx-h">' + PR[p][0] + '<span class="sub">' + PR[p][1] + '</span></div>';
+      ["u", "s", "p"].forEach(function (u) {
+        var n = RISKS.filter(function (r) { return r.p === p && r.u === u; }).length;
+        var sc = ({ h: 3, m: 2, l: 1 })[p] + ({ u: 3, s: 2, p: 1 })[u];
+        var cls = n === 0 ? "zero" : ("s" + Math.max(sc, 2));
+        html += '<button type="button" class="cell ' + cls + '" id="mx-' + p + u + '" data-p="' + p + '" data-u="' + u + '" aria-pressed="' + (fp === p && fu === u) + '" aria-label="' + PR[p][1] + ' / ' + UR[u][1] + ': ' + n + '">' + n + '</button>';
+      });
+    });
+    document.getElementById("matrix").innerHTML = html;
+  }
+  function renderRisks() {
+    var list = shown();
+    document.getElementById("riskcount").innerHTML = '<span class="num">' + list.length + '</span>件表示中 · ' + list.length + ' of ' + RISKS.length + ' shown';
+    var all = document.getElementById("report-all");
+    all.href = list.length ? owaHref(list) : "#";
+    all.setAttribute("aria-disabled", list.length ? "false" : "true");
+    all.style.opacity = list.length ? "1" : ".4";
+    document.getElementById("risks").innerHTML = list.length ? list.map(function (r) {
+      return '<article class="risk p-' + r.p + '">' +
+        '<div class="sev-box"><b>' + PR[r.p][0] + '</b><span>' + PR[r.p][1] + '</span></div>' +
+        '<div><div class="risk-id">' + r.id + '</div><div class="what">' + r.ja + '</div><span class="sub">' + r.en + ' · ' + r.vi + '</span>' +
+          '<div class="impact"><b>影響 Impact：</b>' + r.impJa + '<span class="sub">' + r.impEn + '</span></div></div>' +
+        '<div class="act"><span class="urg ' + r.u + '">' + ic("clock") + UR[r.u][0] + ' · ' + UR[r.u][1] + ' · 残り ' + r.days + ' 日</span>' +
+          '<span class="own"><img src="' + AV[r.own] + '" alt="">' + r.own + '</span>' +
+          '<span>' + r.actJa + '<span class="sub">' + r.actEn + '</span></span>' +
+          '<span class="due num">期限 Due ' + r.due + '</span>' +
+          '<div class="btns"><a class="btn primary" href="' + owaHref([r]) + '" target="_blank" rel="noopener">' + ic("send") + 'Outlook で報告</a>' +
+          '<a class="btn ghost" href="' + mailtoHref([r]) + '">' + ic("mail") + 'デスクトップ版</a></div>' +
+          '<span class="send-note">下書きを開くだけ。送信はご自身で。 · Opens a draft. You send.</span></div>' +
+        '</article>';
+    }).join("") : '<div class="empty">該当するリスクはありません。 · No risks match this filter. · Không có rủi ro phù hợp.</div>';
+  }
+  function setRisk(p, u, focusId) {
+    fp = p; fu = u;
+    try { localStorage.setItem("oepm-risk", fp + "|" + fu); } catch (err) {}
+    renderRiskFilters(); renderRisks();
+    var el = document.getElementById(focusId); if (el) el.focus();
+  }
+  document.getElementById("f-prio").addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) setRisk(b.dataset.v, fu, b.id); });
+  document.getElementById("f-urg").addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) setRisk(fp, b.dataset.v, b.id); });
+  document.getElementById("matrix").addEventListener("click", function (e) {
+    var b = e.target.closest(".cell"); if (!b) return;
+    if (fp === b.dataset.p && fu === b.dataset.u) setRisk("all", "all", b.id); else setRisk(b.dataset.p, b.dataset.u, b.id);
+  });
+  document.getElementById("report-all").addEventListener("click", function (e) { if (!shown().length) e.preventDefault(); });
+  try { var sr = (localStorage.getItem("oepm-risk") || "").split("|"); if (sr.length === 2) { fp = sr[0] || "all"; fu = sr[1] || "all"; } } catch (err) {}
+  renderRiskFilters(); renderRisks();
 })();
 </script>
