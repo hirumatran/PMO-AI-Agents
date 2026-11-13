@@ -1,0 +1,477 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OEPM Dashboard</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: one left-aligned 1024px column on white. One blue band (header), one grey band (Microsoft 365). Olympus design system, light only by design. */
+:root {
+  --color-bg: #FFFFFF;
+  --color-surface: #F2F2F2;
+  --color-surface-2: #E6E6E6;
+  --color-border: #D6D6D6;
+  --color-ink: #000000;
+  --color-body: #333333;
+  --color-muted: #666666;
+  --color-brand: #001C71;
+  --color-brand-tint: #E8EBF3;
+  --color-on-brand: #FFFFFF;
+  --color-accent: #EAA100;
+  --color-critical: #A4262C;   /* status only: overdue, high risk */
+  --font-sans: "Noto Sans JP", "Noto Sans", "Yu Gothic", Meiryo, sans-serif;
+  --font-vi: "Noto Sans", "Noto Sans JP", Arial, sans-serif;
+  --space-1: 8px; --space-2: 16px; --space-3: 24px; --space-4: 40px; --space-5: 64px;
+  --radius: 2px;
+  --border: 1px solid var(--color-border);
+  --content-max: 1024px;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--color-bg);
+  color: var(--color-body);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 2;
+  -webkit-font-smoothing: antialiased;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--color-brand); }
+table { font-size: inherit; }
+.wrap {
+  max-width: calc(var(--content-max) + 2 * 16px);
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.num { font-variant-numeric: tabular-nums; }
+.sub { display: block; font-family: var(--font-vi); font-size: 13px; line-height: 1.5; color: var(--color-muted); font-weight: 400; letter-spacing: 0; }
+.on-brand .sub { color: rgba(255,255,255,.72); }
+.label { font-size: 13px; font-weight: 700; letter-spacing: 1px; color: var(--color-brand); line-height: 1.5; }
+:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 2px; }
+
+/* Header band */
+.hero { background: var(--color-brand); color: var(--color-on-brand); }
+.hero .wrap { padding-block: var(--space-4) var(--space-3); display: grid; gap: var(--space-2); }
+.hero-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: var(--space-2); }
+.brandmark { font-size: 13px; font-weight: 700; letter-spacing: 2px; line-height: 1.5; }
+.brandmark::after { content: ""; display: block; width: 40px; border-bottom: 3px solid var(--color-accent); margin-top: 6px; }
+.hero h1 { margin: 0; font-size: 40px; font-weight: 700; line-height: 1.3; color: var(--color-on-brand); text-wrap: balance; }
+.hero h1 .sub { font-size: 16px; margin-top: 6px; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.tag { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; line-height: 1.5; padding: 4px 10px; border: 1px solid rgba(255,255,255,.5); border-radius: var(--radius); }
+.tag b { font-weight: 700; }
+
+/* Sections */
+section { padding-block: var(--space-5) 0; }
+section > .wrap > h2, .band h2 {
+  margin: 0 0 var(--space-3); font-size: 28px; font-weight: 700; line-height: 1.6; letter-spacing: 1.75px; color: var(--color-ink);
+}
+h2 .sub { letter-spacing: 0; }
+h3 { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.5; color: var(--color-ink); }
+h3::before { content: "\203A"; color: var(--color-brand); margin-right: 6px; font-weight: 700; }
+
+/* KPI tiles */
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
+.kpi { border: var(--border); border-radius: var(--radius); padding: var(--space-2) var(--space-3); display: grid; gap: 4px; align-content: start; }
+.kpi .v { font-size: 36px; font-weight: 700; line-height: 1.2; color: var(--color-ink); font-family: var(--font-vi); }
+.kpi .v small { font-size: 16px; font-weight: 500; color: var(--color-muted); margin-left: 4px; }
+.kpi .k { font-size: 14px; font-weight: 700; line-height: 1.5; color: var(--color-body); }
+.kpi .note { font-size: 12px; line-height: 1.5; color: var(--color-muted); }
+.kpi.lead { background: var(--color-brand-tint); border-color: var(--color-brand-tint); }
+.kpi.lead .v { color: var(--color-brand); }
+
+/* Timeline */
+.tl { border: var(--border); border-radius: var(--radius); padding: var(--space-3); overflow-x: auto; }
+.tl-inner { min-width: 640px; display: grid; gap: 10px; }
+.tl-row { display: grid; grid-template-columns: 220px 1fr; align-items: center; gap: var(--space-2); }
+.tl-name { font-size: 14px; font-weight: 700; line-height: 1.4; color: var(--color-ink); }
+.tl-name .sub { font-size: 12px; }
+.tl-track { position: relative; height: 28px; }
+.tl-axis .tl-track { height: 22px; border-bottom: var(--border); }
+.tick { position: absolute; bottom: 2px; font-size: 12px; line-height: 1; color: var(--color-muted); transform: translateX(-50%); font-family: var(--font-vi); }
+.grid-line { position: absolute; top: 0; bottom: 0; border-left: 1px solid var(--color-surface-2); }
+.bar { position: absolute; top: 6px; height: 16px; background: var(--color-brand); border-radius: var(--radius); }
+.bar.tbc { background: repeating-linear-gradient(135deg, var(--color-brand) 0 6px, var(--color-brand-tint) 6px 10px); }
+.bar-label { position: absolute; top: 4px; font-size: 12px; line-height: 20px; white-space: nowrap; color: var(--color-body); font-family: var(--font-vi); }
+.diamond { position: absolute; top: 7px; width: 14px; height: 14px; background: var(--color-brand); transform: translateX(-50%) rotate(45deg); }
+.today { position: absolute; top: 0; bottom: 0; border-left: 2px solid var(--color-accent); }
+.today-cap { position: absolute; top: -2px; transform: translateX(6px); font-size: 12px; line-height: 1; font-weight: 700; color: var(--color-ink); white-space: nowrap; font-family: var(--font-vi); }
+.tl-foot { margin-top: var(--space-2); font-size: 12px; line-height: 1.6; color: var(--color-muted); }
+
+/* Agents */
+.agents { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+.agent { border: var(--border); border-radius: var(--radius); display: grid; grid-template-rows: auto auto auto 1fr; }
+.agent-head { display: grid; grid-template-columns: 64px 1fr; gap: var(--space-2); padding: var(--space-2) var(--space-2) 0; align-items: center; }
+.agent-head img { width: 64px; height: 64px; border-radius: var(--radius); display: block; background: var(--color-surface); object-fit: cover; }
+.agent-name { font-size: 18px; font-weight: 700; line-height: 1.3; color: var(--color-ink); font-family: var(--font-vi); }
+.agent-role { font-size: 13px; line-height: 1.5; color: var(--color-body); font-weight: 500; }
+.agent-role .sub { font-size: 12px; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: var(--space-2) var(--space-2) 0; border-top: var(--border); border-bottom: var(--border); }
+.stat { padding: 10px 0; display: grid; gap: 2px; }
+.stat + .stat { border-left: var(--border); padding-left: 12px; }
+.stat .v { font-size: 22px; font-weight: 700; line-height: 1.2; color: var(--color-ink); font-family: var(--font-vi); }
+.stat .k { font-size: 12px; line-height: 1.4; color: var(--color-muted); }
+.spark { padding: var(--space-2) var(--space-2) 0; display: grid; gap: 4px; }
+.spark-cap { display: flex; justify-content: space-between; font-size: 12px; line-height: 1.5; color: var(--color-muted); font-family: var(--font-vi); }
+.spark svg { width: 100%; height: 48px; display: block; overflow: visible; }
+.focus { list-style: none; margin: 0; padding: var(--space-2); display: grid; gap: 8px; align-content: start; }
+.focus li { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; font-size: 13px; line-height: 1.5; color: var(--color-body); padding-top: 8px; border-top: 1px solid var(--color-surface-2); }
+.focus li:first-child { border-top: 0; padding-top: 0; }
+.focus li .sub { font-size: 11px; }
+
+/* Status chips */
+.chip { display: inline-block; white-space: nowrap; font-size: 12px; font-weight: 700; line-height: 1.5; padding: 1px 8px; border-radius: var(--radius); border: 1px solid var(--color-border); color: var(--color-body); background: var(--color-bg); }
+.chip.prog { border-color: var(--color-brand); color: var(--color-brand); }
+.chip.wait { background: var(--color-brand); border-color: var(--color-brand); color: var(--color-on-brand); }
+.chip.late { border-color: var(--color-critical); color: var(--color-critical); }
+.chip.done { background: var(--color-surface); border-color: var(--color-surface); color: var(--color-muted); }
+.chip.todo { color: var(--color-muted); }
+
+/* Task table */
+.filters { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-bottom: var(--space-2); }
+.filters button {
+  font: inherit; font-size: 13px; font-weight: 700; line-height: 1.5; padding: 6px 14px; cursor: pointer;
+  border: 1px solid var(--color-brand); color: var(--color-brand); background: var(--color-bg); border-radius: var(--radius);
+}
+.filters button[aria-pressed="true"] { background: var(--color-brand); color: var(--color-on-brand); }
+.filters button:hover { background: var(--color-brand-tint); }
+.filters button[aria-pressed="true"]:hover { background: var(--color-brand); }
+.table-wrap { overflow-x: auto; border: var(--border); border-radius: var(--radius); }
+table.tasks { width: 100%; min-width: 720px; border-collapse: collapse; line-height: 1.5; font-size: 14px; }
+.tasks th { text-align: left; font-size: 12px; font-weight: 700; color: var(--color-ink); background: var(--color-surface); padding: 10px 12px; border-bottom: var(--border); white-space: nowrap; }
+.tasks th .sub { font-size: 11px; font-weight: 400; }
+.tasks td { padding: 10px 12px; border-bottom: 1px solid var(--color-surface-2); vertical-align: top; }
+.tasks tr:last-child td { border-bottom: 0; }
+.tasks td .sub { font-size: 12px; }
+.tasks td.num { white-space: nowrap; }
+.tasks tr.is-late td:first-child { box-shadow: inset 3px 0 0 var(--color-critical); }
+.who { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; font-family: var(--font-vi); font-weight: 500; }
+.who img { width: 24px; height: 24px; border-radius: var(--radius); }
+.prio { font-weight: 700; white-space: nowrap; }
+.prio.h { color: var(--color-ink); }
+.prio.m, .prio.l { color: var(--color-muted); font-weight: 500; }
+
+/* M365 band */
+.band { background: var(--color-surface); margin-top: var(--space-5); }
+.band .wrap { padding-block: var(--space-5); }
+.notice { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-2); align-items: center; background: var(--color-bg); border-left: 3px solid var(--color-accent); padding: 12px var(--space-2); margin-bottom: var(--space-3); font-size: 14px; line-height: 1.6; }
+.notice b { color: var(--color-ink); }
+.boxes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+.box { background: var(--color-bg); border: var(--border); border-radius: var(--radius); padding: var(--space-2) var(--space-3) var(--space-3); display: grid; gap: var(--space-1); align-content: start; }
+.box-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-1); flex-wrap: wrap; }
+.src { font-size: 12px; font-weight: 700; letter-spacing: 1px; color: var(--color-brand); line-height: 1.5; font-family: var(--font-vi); }
+.box ul { list-style: none; margin: 0; padding: 0; display: grid; }
+.box li { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 10px 0; border-top: 1px solid var(--color-surface-2); font-size: 14px; line-height: 1.5; color: var(--color-body); }
+.box li:first-child { border-top: 0; }
+.box li .t { color: var(--color-ink); font-weight: 500; min-width: 0; }
+.box li .sub { font-size: 12px; }
+.box li time, .box li .meta { font-size: 12px; color: var(--color-muted); white-space: nowrap; font-family: var(--font-vi); }
+
+/* Risks */
+.risks { display: grid; gap: var(--space-2); }
+.risk { display: grid; grid-template-columns: 88px minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-3); border: var(--border); border-radius: var(--radius); padding: var(--space-2) var(--space-3); align-items: start; }
+.risk.hi { border-left: 3px solid var(--color-critical); }
+.risk.md { border-left: 3px solid var(--color-muted); }
+.sev { font-size: 13px; font-weight: 700; line-height: 1.5; }
+.risk.hi .sev { color: var(--color-critical); }
+.risk.md .sev { color: var(--color-muted); }
+.risk .what { font-size: 15px; font-weight: 700; color: var(--color-ink); line-height: 1.6; }
+.risk .act { font-size: 14px; line-height: 1.6; }
+.risk .act .label { display: block; }
+
+footer { margin-top: var(--space-5); border-top: var(--border); }
+footer .wrap { padding-block: var(--space-3) var(--space-4); font-size: 12px; line-height: 1.8; color: var(--color-muted); display: grid; gap: 4px; }
+
+@media (max-width: 860px) {
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .agents { grid-template-columns: minmax(0, 1fr); }
+  .boxes { grid-template-columns: minmax(0, 1fr); }
+  .risk { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+}
+@media (max-width: 480px) {
+  .hero h1 { font-size: 30px; }
+  .kpi .v { font-size: 30px; }
+  section > .wrap > h2, .band h2 { font-size: 24px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bar, .stat .v { transition: opacity .2s; }
+}
+</style>
+
+<header class="hero on-brand">
+  <div class="wrap">
+    <div class="hero-top">
+      <div class="brandmark">OEPM · OLYMPUS VIETNAM</div>
+      <div class="hero-meta">
+        <span class="tag"><b>サンプルデータ</b> Sample data · Dữ liệu mẫu</span>
+        <span class="tag">基準日 <b class="num" id="asof">2026-11-13</b></span>
+      </div>
+    </div>
+    <h1>オペレーショナル・エクセレンス PMO ダッシュボード
+      <span class="sub">Operational Excellence PMO Dashboard · Bảng điều khiển PMO Vận hành Xuất sắc</span>
+    </h1>
+  </div>
+</header>
+
+<main>
+  <section aria-labelledby="s-overview">
+    <div class="wrap">
+      <h2 id="s-overview">概要<span class="sub">Overview · Tổng quan</span></h2>
+      <div class="kpis" id="kpis"></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-project">
+    <div class="wrap">
+      <h2 id="s-project">プロジェクト工程<span class="sub">Single-use Endoscopic Camera line · Dây chuyền camera nội soi dùng một lần</span></h2>
+      <div class="tl"><div class="tl-inner" id="timeline"></div></div>
+      <p class="tl-foot">斜線 = 日程未確定 (TBC)。FAT は据付開始前、詳細日程は未定。<br>Hatched = date TBC. FAT before installation start; exact dates not yet fixed. · Gạch chéo = chưa chốt ngày.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-agents">
+    <div class="wrap">
+      <h2 id="s-agents">エージェント別パフォーマンス<span class="sub">Agent performance · Hiệu suất theo trợ lý</span></h2>
+      <div class="agents" id="agents"></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-tasks">
+    <div class="wrap">
+      <h2 id="s-tasks">タスク一覧<span class="sub">Task board · Danh sách công việc</span></h2>
+      <div class="filters" role="group" aria-label="担当で絞り込み / Filter by agent" id="filters"></div>
+      <div class="table-wrap">
+        <table class="tasks">
+          <thead>
+            <tr>
+              <th>タスク<span class="sub">Task · Công việc</span></th>
+              <th>担当<span class="sub">Owner · Phụ trách</span></th>
+              <th>期限<span class="sub">Due · Hạn</span></th>
+              <th>状態<span class="sub">Status · Trạng thái</span></th>
+              <th>優先度<span class="sub">Priority · Ưu tiên</span></th>
+            </tr>
+          </thead>
+          <tbody id="taskrows"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="band" aria-labelledby="s-m365">
+    <div class="wrap">
+      <h2 id="s-m365">Microsoft 365 インフォメーション<span class="sub">Teams &amp; Outlook highlights · Thông tin nổi bật từ Teams &amp; Outlook</span></h2>
+      <div class="notice">
+        <b>未接続</b>
+        <span>Microsoft 365 は未接続です。下記は表示確認用のサンプルです。<span class="sub">Not connected. Sample items for layout only. · Chưa kết nối. Dữ liệu mẫu để xem bố cục.</span></span>
+      </div>
+      <div class="boxes" id="boxes"></div>
+    </div>
+  </div>
+
+  <section aria-labelledby="s-risks">
+    <div class="wrap">
+      <h2 id="s-risks">BOD 向け主要リスク<span class="sub">Key risks for the Board · Rủi ro chính cho HĐQT</span></h2>
+      <div class="risks" id="risks"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>数値・タスク・メッセージはすべてサンプルです。Microsoft 365 接続後に実データへ置き換えます。</span>
+    <span>All figures, tasks and messages are samples. They will be replaced with live data once Microsoft 365 is connected. · Tất cả số liệu là dữ liệu mẫu.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var AV = { Hiruma: "data:image/jpeg;base64,{{HIRUMA}}", Chopper: "data:image/jpeg;base64,{{CHOPPER}}", Jarvis: "data:image/jpeg;base64,{{JARVIS}}" };
+  var ASOF = new Date("2026-11-13T00:00:00");
+  var INSTALL = new Date("2027-03-01T00:00:00");
+
+  var AGENTS = [
+    { name: "Hiruma", role: "プロジェクトアシスタント・チームリーダー", sub: "Lead Project Assistant · Trợ lý dự án trưởng nhóm",
+      weekly: [2,3,2,3,2,2,2,2], open: 5, ontime: 94 },
+    { name: "Chopper", role: "医療機器・規制エキスパート", sub: "Medical device &amp; regulatory expert · Chuyên gia thiết bị y tế",
+      weekly: [1,2,1,2,2,1,2,1], open: 4, ontime: 92 },
+    { name: "Jarvis", role: "パーソナルアシスタント", sub: "Personal Assistant · Trợ lý cá nhân",
+      weekly: [4,5,3,5,4,6,5,4], open: 6, ontime: 97 }
+  ];
+
+  var ST = {
+    prog: ["進行中", "In progress · Đang thực hiện"],
+    todo: ["未着手", "Not started · Chưa bắt đầu"],
+    late: ["遅延", "Overdue · Trễ hạn"],
+    wait: ["承認待ち", "Awaiting your OK · Chờ phê duyệt"],
+    done: ["完了", "Done · Hoàn thành"]
+  };
+  var PR = { h: ["高", "High · Cao"], m: ["中", "Medium · Trung bình"], l: ["低", "Low · Thấp"] };
+
+  var TASKS = [
+    { a: "Hiruma", ja: "設備ベンダー RFQ 比較表", en: "Equipment vendor RFQ comparison · So sánh báo giá nhà cung cấp thiết bị", due: "2026-11-12", s: "late", p: "h" },
+    { a: "Jarvis", ja: "ベンダー会議 議事録（送信前）", en: "Vendor meeting minutes, draft not sent · Biên bản họp nhà cung cấp (chưa gửi)", due: "2026-11-13", s: "wait", p: "m" },
+    { a: "Jarvis", ja: "週次メールダイジェスト", en: "Weekly email digest · Tóm tắt email hàng tuần", due: "2026-11-14", s: "prog", p: "m" },
+    { a: "Hiruma", ja: "マスタースケジュール v1.2 更新", en: "Update master schedule v1.2 · Cập nhật tiến độ tổng thể v1.2", due: "2026-11-18", s: "prog", p: "h" },
+    { a: "Jarvis", ja: "東京本社 出張手配（12月）", en: "Book Tokyo HQ trip, December · Đặt chuyến công tác Tokyo tháng 12", due: "2026-11-19", s: "todo", p: "l" },
+    { a: "Chopper", ja: "FAT プロトコル要求事項レビュー", en: "Review FAT protocol requirements · Rà soát yêu cầu quy trình FAT", due: "2026-11-20", s: "prog", p: "h" },
+    { a: "Hiruma", ja: "新ライン VSM（バリューストリームマップ）作成", en: "Value stream map for the new line · Sơ đồ chuỗi giá trị cho dây chuyền mới", due: "2026-11-21", s: "prog", p: "m" },
+    { a: "Jarvis", ja: "設備第1便 輸入通関書類チェック", en: "Customs documents, equipment lot 1 · Kiểm tra hồ sơ hải quan lô thiết bị 1", due: "2026-11-22", s: "prog", p: "m" },
+    { a: "Chopper", ja: "クリーンルーム清浄度クラス確認（ISO 14644-1）", en: "Confirm cleanroom class per ISO 14644-1 · Xác nhận cấp phòng sạch theo ISO 14644-1", due: "2026-11-25", s: "todo", p: "m" },
+    { a: "Hiruma", ja: "11月度 BOD 報告書 作成", en: "November BOD report · Báo cáo HĐQT tháng 11", due: "2026-11-28", s: "todo", p: "h" },
+    { a: "Chopper", ja: "滅菌方式比較 EO / 放射線（ISO 11135 / 11137）", en: "Sterilization options, EO vs radiation · So sánh phương pháp tiệt trùng EO / bức xạ", due: "2026-12-05", s: "prog", p: "h" },
+    { a: "Chopper", ja: "PFMEA 初版レビュー", en: "PFMEA first draft review · Rà soát PFMEA bản đầu", due: "2026-11-10", s: "done", p: "h" }
+  ];
+
+  var BOXES = [
+    { ja: "要対応メール", sub: "Emails needing action · Email cần xử lý", src: "OUTLOOK", items: [
+      ["ベンダーA：FAT 日程の確認依頼", "Vendor A: please confirm FAT dates · Nhà cung cấp A: xác nhận lịch FAT", "今日 09:12"],
+      ["品質保証部：URS 改訂版のレビュー依頼", "QA: review revised URS · QA: rà soát URS bản sửa đổi", "昨日 17:40"],
+      ["調達部：PO 承認 期限 11/15", "Procurement: PO approval due 15 Nov · Mua hàng: duyệt PO trước 15/11", "11/12"]
+    ]},
+    { ja: "今後の会議", sub: "Upcoming meetings · Cuộc họp sắp tới", src: "OUTLOOK · TEAMS", items: [
+      ["週次プロジェクト定例", "Weekly project sync · Họp dự án hàng tuần", "11/13 14:00"],
+      ["ベンダーA FAT 準備会議", "Vendor A FAT preparation · Chuẩn bị FAT với nhà cung cấp A", "11/14 10:00"],
+      ["本社 OpEx レビュー", "HQ OpEx review · Đánh giá OpEx với trụ sở", "11/18 16:00"]
+    ]},
+    { ja: "Teams メンション", sub: "Teams mentions · Nhắc đến trên Teams", src: "TEAMS", items: [
+      ["#Line-Setup：レイアウト図 Rev.C を共有", "Layout drawing Rev.C shared · Đã chia sẻ bản vẽ bố trí Rev.C", "今日 08:30"],
+      ["#QA-Validation：バリデーション計画ドラフトの確認依頼", "Please check validation plan draft · Vui lòng xem bản nháp kế hoạch thẩm định", "昨日"],
+      ["#Procurement：第1便 出荷日確定", "Lot 1 ship date confirmed · Đã chốt ngày giao lô 1", "11/11"]
+    ]},
+    { ja: "最近の共有ファイル", sub: "Recently shared files · Tệp chia sẻ gần đây", src: "TEAMS · ONEDRIVE", items: [
+      ["URS_SingleUseCamera_Rev3.xlsx", "User requirement spec · Đặc tả yêu cầu người dùng", "今日"],
+      ["Line_Layout_RevC.pdf", "Line layout · Bố trí dây chuyền", "今日"],
+      ["VMP_Draft_v0.3.docx", "Validation master plan · Kế hoạch thẩm định tổng thể", "11/10"]
+    ]}
+  ];
+
+  var RISKS = [
+    { lv: "hi", sev: ["高", "High · Cao"], ja: "FAT 日程が未確定。2027年3月の据付開始に直結。", en: "FAT date not fixed. Directly threatens the Mar-2027 installation start. · Chưa chốt ngày FAT, ảnh hưởng trực tiếp đến lắp đặt tháng 3/2027.",
+      own: "Hiruma", act: "11/20 までにベンダーAと日程確定", actEn: "Fix date with Vendor A by 20 Nov · Chốt lịch với nhà cung cấp A trước 20/11" },
+    { lv: "hi", sev: ["高", "High · Cao"], ja: "滅菌方式が未決定。バリデーション計画とクリーンルーム仕様が決められない。", en: "Sterilization method undecided. Blocks validation plan and cleanroom spec. · Chưa chọn phương pháp tiệt trùng, chặn kế hoạch thẩm định.",
+      own: "Chopper", act: "EO / 放射線の比較を 12/5 に提出、方針決定を依頼", actEn: "Submit EO vs radiation comparison on 5 Dec for decision · Nộp so sánh 5/12 để quyết định" },
+    { lv: "md", sev: ["中", "Medium · TB"], ja: "設備輸入の通関リードタイムが不透明。", en: "Customs lead time for imported equipment is uncertain. · Thời gian thông quan thiết bị nhập khẩu chưa rõ.",
+      own: "Jarvis", act: "通関業者と書類事前確認、余裕日数を工程に反映", actEn: "Pre-check documents with broker, add buffer to schedule · Kiểm tra trước hồ sơ, thêm dự phòng vào tiến độ" }
+  ];
+
+  function esc(s) { return String(s); }
+  function sum(a) { return a.reduce(function (x, y) { return x + y; }, 0); }
+  function chip(s) { return '<span class="chip ' + s + '" title="' + ST[s][1] + '">' + ST[s][0] + '</span>'; }
+
+  /* KPIs, derived from the agent data so the numbers agree */
+  var openAll = sum(AGENTS.map(function (a) { return a.open; }));
+  var doneWk = sum(AGENTS.map(function (a) { return a.weekly[a.weekly.length - 1]; }));
+  var done8 = AGENTS.map(function (a) { return sum(a.weekly); });
+  var ontimeAll = Math.round(sum(AGENTS.map(function (a, i) { return a.ontime * done8[i]; })) / sum(done8));
+  var days = Math.round((INSTALL - ASOF) / 86400000);
+  var lateCount = TASKS.filter(function (t) { return t.s === "late"; }).length;
+  var KP = [
+    { lead: true, v: days, u: "日", k: "据付開始まで", s: "Days to installation start · Ngày đến lắp đặt", n: "基準 2027-03-01（月のみ確定）" },
+    { v: openAll, u: "件", k: "未完了タスク", s: "Open tasks · Việc đang mở", n: "うち遅延 " + lateCount + " 件 / " + lateCount + " overdue" },
+    { v: doneWk, u: "件", k: "今週の完了", s: "Done this week · Hoàn thành tuần này", n: "3 エージェント合計" },
+    { v: ontimeAll, u: "%", k: "期限内完了率", s: "On-time rate · Tỷ lệ đúng hạn", n: "直近 8 週間・加重平均" }
+  ];
+  document.getElementById("kpis").innerHTML = KP.map(function (k) {
+    return '<div class="kpi' + (k.lead ? ' lead' : '') + '"><div class="k">' + k.k + '<span class="sub">' + k.s + '</span></div>' +
+      '<div class="v num">' + k.v + '<small>' + k.u + '</small></div><div class="note">' + k.n + '</div></div>';
+  }).join("");
+
+  /* Timeline */
+  var T0 = new Date("2026-10-01"), T1 = new Date("2030-06-30");
+  function pct(d) { return ((new Date(d) - T0) / (T1 - T0) * 100).toFixed(2) + "%"; }
+  function width(a, b) { return ((new Date(b) - new Date(a)) / (T1 - T0) * 100).toFixed(2) + "%"; }
+  var years = ["2027-01-01", "2028-01-01", "2029-01-01", "2030-01-01"];
+  var grid = years.map(function (y) { return '<span class="grid-line" style="left:' + pct(y) + '"></span>'; }).join("");
+  var todayMark = '<span class="today" style="left:' + pct(ASOF) + '"></span>';
+  var ROWS = [
+    { ja: "FAT（ベンダー工場）", s: "Factory acceptance test · FAT", html: '<span class="bar tbc" style="left:' + pct("2027-01-01") + ';width:' + width("2027-01-01", "2027-03-01") + '"></span><span class="bar-label" style="left:calc(' + pct("2027-03-01") + ' + 8px)">据付前 · TBC</span>' },
+    { ja: "据付開始", s: "Installation start · Bắt đầu lắp đặt", html: '<span class="diamond" style="left:' + pct("2027-03-15") + '"></span><span class="bar-label" style="left:calc(' + pct("2027-03-15") + ' + 14px)">2027-03</span>' },
+    { ja: "SAT（現地）", s: "Site acceptance test · SAT", html: '<span class="bar" style="left:' + pct("2027-07-01") + ';width:' + width("2027-07-01", "2027-10-01") + '"></span><span class="bar-label" style="left:calc(' + pct("2027-10-01") + ' + 8px)">Q3-2027</span>' },
+    { ja: "バリデーション", s: "Validation · Thẩm định", html: '<span class="bar tbc" style="left:' + pct("2027-01-01") + ';width:' + width("2027-01-01", "2030-01-01") + '"></span><span class="bar-label" style="left:calc(' + pct("2030-01-01") + ' + 8px)">2027–2029</span>' },
+    { ja: "海外向け製品リリース", s: "International release · Phát hành quốc tế", html: '<span class="diamond" style="left:' + pct("2030-01-15") + '"></span><span class="bar-label" style="left:calc(' + pct("2030-01-15") + ' - 110px)">検証完了後</span>' }
+  ];
+  var axis = '<div class="tl-row tl-axis"><div></div><div class="tl-track">' +
+    years.map(function (y) { return '<span class="tick" style="left:' + pct(y) + '">' + y.slice(0, 4) + '</span>'; }).join("") +
+    '<span class="today-cap" style="left:' + pct(ASOF) + '">今日</span></div></div>';
+  document.getElementById("timeline").innerHTML = axis + ROWS.map(function (r) {
+    return '<div class="tl-row"><div class="tl-name">' + r.ja + '<span class="sub">' + r.s + '</span></div><div class="tl-track">' + grid + todayMark + r.html + '</div></div>';
+  }).join("");
+
+  /* Agent cards */
+  function spark(data) {
+    var W = 240, H = 48, max = Math.max.apply(null, data.concat([6])), n = data.length;
+    var pts = data.map(function (v, i) { return [i * (W / (n - 1)), H - 4 - (v / max) * (H - 10)]; });
+    var line = pts.map(function (p) { return p[0].toFixed(1) + "," + p[1].toFixed(1); }).join(" ");
+    var area = "0," + H + " " + line + " " + W + "," + H;
+    var last = pts[n - 1];
+    var gl = [0.25, 0.5, 0.75].map(function (f) { return '<line x1="0" x2="' + W + '" y1="' + (H * f) + '" y2="' + (H * f) + '" stroke="#E6E6E6" stroke-width="1"/>'; }).join("");
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" role="img" aria-label="週次完了数 ' + data.join(", ") + '">' + gl +
+      '<polygon points="' + area + '" fill="#001C71" fill-opacity="0.08"/>' +
+      '<polyline points="' + line + '" fill="none" stroke="#001C71" stroke-width="2" vector-effect="non-scaling-stroke"/>' +
+      '<circle cx="' + last[0] + '" cy="' + last[1] + '" r="3.5" fill="#001C71"/></svg>';
+  }
+  document.getElementById("agents").innerHTML = AGENTS.map(function (a, i) {
+    var mine = TASKS.filter(function (t) { return t.a === a.name && t.s !== "done"; }).slice(0, 3);
+    return '<article class="agent">' +
+      '<div class="agent-head"><img src="' + AV[a.name] + '" alt="' + a.name + '" width="64" height="64"><div><div class="agent-name">' + a.name + '</div><div class="agent-role">' + a.role + '<span class="sub">' + a.sub + '</span></div></div></div>' +
+      '<div class="stats">' +
+        '<div class="stat"><span class="v num">' + done8[i] + '</span><span class="k">完了 · Done</span></div>' +
+        '<div class="stat"><span class="v num">' + a.open + '</span><span class="k">未完了 · Open</span></div>' +
+        '<div class="stat"><span class="v num">' + a.ontime + '%</span><span class="k">期限内 · On-time</span></div>' +
+      '</div>' +
+      '<div class="spark"><div class="spark-cap"><span>週次完了数（8週）</span><span>Weekly done</span></div>' + spark(a.weekly) + '</div>' +
+      '<ul class="focus">' + mine.map(function (t) {
+        return '<li><span>' + t.ja + '<span class="sub">' + t.en.split(" · ")[0] + '</span></span>' + chip(t.s) + '</li>';
+      }).join("") + '</ul></article>';
+  }).join("");
+
+  /* Task table with agent filter */
+  var current = "all";
+  var FILTERS = [["all", "すべて · All · Tất cả"]].concat(AGENTS.map(function (a) { return [a.name, a.name]; }));
+  var fEl = document.getElementById("filters");
+  function renderFilters() {
+    fEl.innerHTML = FILTERS.map(function (f) {
+      return '<button type="button" id="f-' + f[0] + '" data-f="' + f[0] + '" aria-pressed="' + (f[0] === current) + '">' + f[1] + '</button>';
+    }).join("");
+  }
+  function renderTasks() {
+    var rows = TASKS.filter(function (t) { return current === "all" || t.a === current; })
+      .sort(function (x, y) { return (x.s === "done") - (y.s === "done") || x.due.localeCompare(y.due); });
+    document.getElementById("taskrows").innerHTML = rows.map(function (t) {
+      return '<tr class="' + (t.s === "late" ? "is-late" : "") + '">' +
+        '<td>' + t.ja + '<span class="sub">' + t.en + '</span></td>' +
+        '<td><span class="who"><img src="' + AV[t.a] + '" alt="">' + t.a + '</span></td>' +
+        '<td class="num">' + t.due + '</td>' +
+        '<td>' + chip(t.s) + '<span class="sub">' + ST[t.s][1] + '</span></td>' +
+        '<td><span class="prio ' + t.p + '">' + PR[t.p][0] + '</span><span class="sub">' + PR[t.p][1] + '</span></td></tr>';
+    }).join("");
+  }
+  fEl.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    current = b.getAttribute("data-f");
+    try { localStorage.setItem("oepm-filter", current); } catch (err) {}
+    renderFilters(); renderTasks();
+    var nb = document.getElementById("f-" + current); if (nb) nb.focus();
+  });
+  try { var saved = localStorage.getItem("oepm-filter"); if (saved && FILTERS.some(function (f) { return f[0] === saved; })) current = saved; } catch (err) {}
+  renderFilters(); renderTasks();
+
+  /* M365 boxes */
+  document.getElementById("boxes").innerHTML = BOXES.map(function (b) {
+    return '<div class="box"><div class="box-head"><h3>' + b.ja + '<span class="sub">' + b.sub + '</span></h3><span class="src">' + b.src + '</span></div><ul>' +
+      b.items.map(function (it) { return '<li><span class="t">' + it[0] + '<span class="sub">' + it[1] + '</span></span><time>' + it[2] + '</time></li>'; }).join("") +
+      '</ul></div>';
+  }).join("");
+
+  /* Risks */
+  document.getElementById("risks").innerHTML = RISKS.map(function (r) {
+    return '<div class="risk ' + r.lv + '"><div class="sev">' + r.sev[0] + '<span class="sub">' + r.sev[1] + '</span></div>' +
+      '<div><div class="what">' + r.ja + '</div><span class="sub">' + r.en + '</span></div>' +
+      '<div class="act"><span class="label">対応 · ' + r.own + '</span>' + r.act + '<span class="sub">' + r.actEn + '</span></div></div>';
+  }).join("");
+})();
+</script>
