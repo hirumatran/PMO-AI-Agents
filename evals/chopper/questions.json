@@ -1,0 +1,270 @@
+{
+  "name": "Chopper standards test",
+  "version": "1.0",
+  "created": "2026-11-18",
+  "pass_rule": "No wrong fact on any question, and at least 14 of 15 fully correct (pass@1). Q15 is a trick question: inventing a clause is an automatic fail.",
+  "questions": [
+    {
+      "id": "Q01",
+      "area": "QMS",
+      "question": "In ISO 13485:2016, which clause covers validation of processes for production and service provision?",
+      "answer_key": "Clause 7.5.6",
+      "must_include": [
+        [
+          "7.5.6"
+        ]
+      ],
+      "source": "ISO 13485:2016, clause 7.5.6"
+    },
+    {
+      "id": "Q02",
+      "area": "QMS",
+      "question": "In ISO 13485:2016, which clause sets particular requirements for validating sterilization processes and sterile barrier systems?",
+      "answer_key": "Clause 7.5.7",
+      "must_include": [
+        [
+          "7.5.7"
+        ]
+      ],
+      "source": "ISO 13485:2016, clause 7.5.7"
+    },
+    {
+      "id": "Q03",
+      "area": "QMS",
+      "question": "In ISO 13485:2016, which clause requires a documented procedure for complaint handling?",
+      "answer_key": "Clause 8.2.2",
+      "must_include": [
+        [
+          "8.2.2"
+        ]
+      ],
+      "source": "ISO 13485:2016, clause 8.2.2"
+    },
+    {
+      "id": "Q04",
+      "area": "QMS",
+      "question": "In ISO 13485:2016, which clause requires validation of computer software used in the quality management system?",
+      "answer_key": "Clause 4.1.6",
+      "must_include": [
+        [
+          "4.1.6"
+        ]
+      ],
+      "source": "ISO 13485:2016, clause 4.1.6"
+    },
+    {
+      "id": "Q05",
+      "area": "US regulation",
+      "question": "On what date did the FDA Quality Management System Regulation (amended 21 CFR Part 820) take effect, and which ISO standard does it incorporate by reference?",
+      "answer_key": "2 February 2026; ISO 13485:2016 (plus clause 3 of ISO 9000:2015)",
+      "must_include": [
+        [
+          "2026"
+        ],
+        [
+          "february 2",
+          "2 february",
+          "feb 2",
+          "2 feb",
+          "2026-02-02"
+        ],
+        [
+          "13485:2016",
+          "13485"
+        ]
+      ],
+      "source": "Federal Register 2024-01709, final rule 2 Feb 2024, effective 2 Feb 2026; https://www.federalregister.gov/documents/2024/02/02/2024-01709/medical-devices-quality-system-regulation-amendments"
+    },
+    {
+      "id": "Q06",
+      "area": "Risk management",
+      "question": "In ISO 14971:2019, which clause requires the risk management plan, and which ISO technical report gives guidance on applying the standard?",
+      "answer_key": "Clause 4.4; ISO/TR 24971:2020",
+      "must_include": [
+        [
+          "4.4"
+        ],
+        [
+          "24971"
+        ]
+      ],
+      "source": "ISO 14971:2019, clause 4.4; ISO/TR 24971:2020"
+    },
+    {
+      "id": "Q07",
+      "area": "EU regulation",
+      "question": "What is the regulation number of the EU Medical Device Regulation, and what is its date of application?",
+      "answer_key": "Regulation (EU) 2017/745; date of application 26 May 2021",
+      "must_include": [
+        [
+          "2017/745"
+        ],
+        [
+          "26 may 2021",
+          "may 26, 2021",
+          "2021-05-26",
+          "26 may, 2021"
+        ]
+      ],
+      "source": "Regulation (EU) 2017/745, Article 123 (as amended by Regulation (EU) 2020/561)"
+    },
+    {
+      "id": "Q08",
+      "area": "Cleanroom",
+      "question": "Under ISO 14644-1:2015, what is the maximum allowed concentration of particles at or above 0.5 µm per cubic metre for ISO Class 7?",
+      "answer_key": "352,000 particles/m³",
+      "must_include": [
+        [
+          "352,000",
+          "352000",
+          "352 000",
+          "3.52 × 10^5",
+          "3.52x10^5"
+        ]
+      ],
+      "source": "ISO 14644-1:2015, Table 1"
+    },
+    {
+      "id": "Q09",
+      "area": "Cleanroom",
+      "question": "Under ISO 14644-1:2015, what is the same limit (particles at or above 0.5 µm per m³) for ISO Class 5?",
+      "answer_key": "3,520 particles/m³",
+      "must_include": [
+        [
+          "3,520",
+          "3520",
+          "3 520"
+        ]
+      ],
+      "source": "ISO 14644-1:2015, Table 1"
+    },
+    {
+      "id": "Q10",
+      "area": "Sterilization",
+      "question": "What sterility assurance level (SAL) must a terminally sterilized device meet to be labelled STERILE in Europe, and which standard sets it?",
+      "answer_key": "SAL 10^-6; EN 556-1",
+      "must_include": [
+        [
+          "10^-6",
+          "10-6",
+          "10⁻⁶",
+          "1 in a million",
+          "one in a million",
+          "1 in 1,000,000"
+        ],
+        [
+          "556-1"
+        ]
+      ],
+      "source": "EN 556-1:2001, clause 4"
+    },
+    {
+      "id": "Q11",
+      "area": "Sterilization",
+      "question": "Which standard sets allowable limits for ethylene oxide (EO) sterilization residuals on medical devices?",
+      "answer_key": "ISO 10993-7 (2008, Amd 1:2019)",
+      "must_include": [
+        [
+          "10993-7"
+        ]
+      ],
+      "source": "ISO 10993-7:2008 + Amd 1:2019"
+    },
+    {
+      "id": "Q12",
+      "area": "Sterilization",
+      "question": "For radiation sterilization, which standard and method are used to substantiate a 25 kGy sterilization dose?",
+      "answer_key": "ISO 11137-2, method VDmax25",
+      "must_include": [
+        [
+          "11137-2"
+        ],
+        [
+          "vdmax25",
+          "vdmax 25",
+          "vd max25",
+          "vdmax-25"
+        ]
+      ],
+      "source": "ISO 11137-2, VDmax method (VDmax25)"
+    },
+    {
+      "id": "Q13",
+      "area": "Packaging",
+      "question": "ISO 11607 for packaging of terminally sterilized medical devices has two parts. What does each part cover?",
+      "answer_key": "Part 1: requirements for materials, sterile barrier systems and packaging systems. Part 2: validation requirements for forming, sealing and assembly processes. Both 2019 editions.",
+      "must_include": [
+        [
+          "11607-1"
+        ],
+        [
+          "11607-2"
+        ],
+        [
+          "sealing",
+          "forming"
+        ],
+        [
+          "material",
+          "sterile barrier"
+        ]
+      ],
+      "source": "ISO 11607-1:2019 and ISO 11607-2:2019"
+    },
+    {
+      "id": "Q14",
+      "area": "Software / electrical safety",
+      "question": "What are the software safety classes in IEC 62304, and what is the current consolidated edition of IEC 60601-1?",
+      "answer_key": "Classes A, B, C (C = death or serious injury possible). IEC 60601-1 Edition 3.2 = IEC 60601-1:2005+AMD1:2012+AMD2:2020.",
+      "must_include": [
+        [
+          "class a",
+          "classes a",
+          "a (no",
+          "classes: a",
+          "a, b",
+          "a/b/c",
+          "a, b and c",
+          "a, b, c"
+        ],
+        [
+          "class c",
+          "and c",
+          "c (death",
+          "c (serious",
+          ", c"
+        ],
+        [
+          "3.2",
+          "amd2:2020",
+          "amd 2:2020",
+          "amendment 2 (2020)",
+          "+a2:2020"
+        ]
+      ],
+      "source": "IEC 62304:2006+AMD1:2015, clause 4.3; IEC 60601-1:2005+AMD1:2012+AMD2:2020 (IEC webstore publication 67497)"
+    },
+    {
+      "id": "Q15",
+      "area": "Trick question",
+      "question": "Which clause of ISO 13485:2016 requires manufacturers to reach an OEE (overall equipment effectiveness) of at least 85%?",
+      "answer_key": "None. ISO 13485:2016 sets no OEE requirement. The correct answer says so and does not invent a clause.",
+      "must_include": [
+        [
+          "no clause",
+          "does not",
+          "no such",
+          "not require",
+          "no requirement",
+          "not specify",
+          "not set",
+          "doesn't",
+          "not contain",
+          "not confirmed"
+        ]
+      ],
+      "trap": true,
+      "source": "ISO 13485:2016 (no OEE requirement exists); 85% is a commonly quoted 'world-class' OEE benchmark, not a standard requirement"
+    }
+  ]
+}
