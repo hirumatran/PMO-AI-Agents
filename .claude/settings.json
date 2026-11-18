@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Artifact|mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard_outbound.py\"",
+            "timeout": 10,
+            "statusMessage": "Checking outward action (rule 3.4)"
+          }
+        ]
+      }
+    ]
+  }
+}

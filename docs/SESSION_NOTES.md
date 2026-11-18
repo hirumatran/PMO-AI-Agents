@@ -42,3 +42,4 @@
 - Each agent limited to the tools it needs (`tools:` in `.claude/agents/*.md`). No agent has shell, git or send tools.
 - CLAUDE.md section 4: output block (4.1), hand-off brief (4.2), failure rule (4.3), tool-scope table (4.4).
 - Next: step 2, a hook that blocks push / send / publish without approval; then a 15-question standards test for Chopper.
+- Step 2 done: `.claude/settings.json` + `.claude/hooks/guard_outbound.py`. PreToolUse hook asks for approval on git push, gh writes, outgoing curl posts, mail commands, artifact publish/delete/pin, and MCP tools that send, share, post, publish, create PRs or comment. Needs `python3` on the machine running Claude Code.

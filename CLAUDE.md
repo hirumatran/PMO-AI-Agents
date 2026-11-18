@@ -100,6 +100,8 @@ Stop:       what would make this wrong or need my decision
 | Jarvis | Read, search, write drafts and to-dos, web research | Send email / Teams / invites, shell, git |
 | Main session | Builds, git, publishing | Anything outside the session without my "yes" (3.4) |
 
+Enforced by a hook: `.claude/hooks/guard_outbound.py` turns any push, publish, send, share, PR or comment into an approval prompt, in every permission mode.
+
 ## 5. Agent team
 
 Definitions live in `.claude/agents/`. Avatars in `assets/avatars/`.
