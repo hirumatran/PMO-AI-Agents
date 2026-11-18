@@ -71,8 +71,34 @@ New production line for the **Single-use Endoscopic Camera**, Olympus Vietnam.
 
 - Every agent inherits sections 1 to 3.
 - Technical answers end with a **Sources** section.
-- Hand-offs between agents: short brief with goal, inputs, open questions.
 - Anything going outside the team goes through me first (3.4).
+
+### 4.1 Output block (every agent reply and hand-off ends with this)
+
+```
+Status:     Done | Partial | Blocked
+Summary:    one line
+Next steps: who does what next
+Files:      paths or links produced or used ("none" if none)
+Stop:       what would make this wrong or need my decision
+```
+
+### 4.2 Hand-off brief (Hiruma to Chopper / Jarvis)
+- Goal, inputs (files, links), open questions, due date, expected output format.
+- One brief per task. No "look into everything".
+
+### 4.3 When something fails
+- Give the likely cause, one safe retry, and the stop condition.
+- Same error twice: stop and report as **Blocked**. No loops, no guessing.
+
+### 4.4 Tool scope (least privilege)
+
+| Agent | Can | Cannot |
+|---|---|---|
+| Hiruma | Read, search, write / edit docs and dashboard data, web research | Shell, git, send, publish |
+| Chopper | Read, search, web research | Write files, shell, send |
+| Jarvis | Read, search, write drafts and to-dos, web research | Send email / Teams / invites, shell, git |
+| Main session | Builds, git, publishing | Anything outside the session without my "yes" (3.4) |
 
 ## 5. Agent team
 

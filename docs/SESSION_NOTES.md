@@ -37,3 +37,8 @@
 ### How to resume
 - Open a new Claude Code session on this repo. CLAUDE.md loads automatically, and `/agents` lists the team.
 - Edit `dashboard/oepm-dashboard.template.html`, run `python3 dashboard/build.py`, ask Claude to republish to the same link.
+
+## 2026-11-18 · Harness hardening, step 1 (from ECC `agent-harness-construction`)
+- Each agent limited to the tools it needs (`tools:` in `.claude/agents/*.md`). No agent has shell, git or send tools.
+- CLAUDE.md section 4: output block (4.1), hand-off brief (4.2), failure rule (4.3), tool-scope table (4.4).
+- Next: step 2, a hook that blocks push / send / publish without approval; then a 15-question standards test for Chopper.
